@@ -18,7 +18,7 @@ public class ImageFilter extends FileFilter {
         String extension = Utils.getExtension(f);
         if (extension != null) {
             if (extension.equals(Utils.painter)) {
-                    return true;
+                return true;
             } else {
                 return false;
             }

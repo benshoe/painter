@@ -17,7 +17,7 @@ public class DrawPanel extends JPanel
 {
    ArrayList<MyShape> shapes; // Array holding all shapes of drawing
    private int shapeCount; // total number of shapes
-   private String fileBaseName = "New file";
+   private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
    private int shapeType; // the type of shape to draw
    private MyShape currentShape; // the current shape being drawn
@@ -100,7 +100,7 @@ public class DrawPanel extends JPanel
    } // end method setFilledShape
 
    // open file chooser to open existing file
-   public void openFileDialog() {
+  public void openFileDialog() {
     // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
     final JFileChooser fc = new JFileChooser();
     fc.setFileFilter(new ImageFilter());
@@ -109,7 +109,6 @@ public class DrawPanel extends JPanel
     File file;
     if (returnVal == JFileChooser.APPROVE_OPTION) {
           file = fc.getSelectedFile();
-          //This is where a real application would open the file.
           fileNameToOpen = file.getPath();
       } else {
           return;
@@ -142,24 +141,52 @@ public class DrawPanel extends JPanel
     } catch (ClassNotFoundException cnfe) {
       System.out.println("Cannot3: " + cnfe);
     }
-   }
+  }
 
-   public void saveFileDialog() {
+  // I'll add a saveFileToDisk(String filePath) which includes
+  // the below try{} block... to make it available for a saveButton().
+  // (where saveButton will only be enabled if saved before)
+
+  public void saveFileDialog() {
     System.out.println("SAVE clicked");
-    try {
-      // Write to disk with FileOutputStream
-      FileOutputStream f_out = new FileOutputStream("MyDrawing.painter");
-      // UPDATE title bar with filename? Keep track of unsaved changes?
-      // Write object with ObjectOutputStream
-      ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
-      // Write object out to disk
-      obj_out.writeObject ( shapes );
-      obj_out.flush();
-      obj_out.close();
-    } catch (FileNotFoundException fne) {
-      System.out.println("Cannot");
-    } catch (IOException ioe) {
-      System.out.println("Cannot2");
+
+    final JFileChooser fc = new JFileChooser();
+    fc.setFileFilter(new ImageFilter());
+    fc.setSelectedFile(new File(m_fileBaseName));
+
+    int returnVal = fc.showSaveDialog(this);
+
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      String selectedFileAbsolutPath = fc.getSelectedFile().getAbsolutePath();
+      String selectedFileBasename = fc.getSelectedFile().getName();
+      String extension = Utils.getExtension(new File(selectedFileAbsolutPath));
+      // forcefully append our file extension if needed
+      if (extension == null || !extension.equals(Utils.painter)) {
+        selectedFileAbsolutPath = selectedFileAbsolutPath + ".painter";
+        selectedFileBasename = selectedFileBasename + ".painter";
+      }
+
+      try {
+        // Write to disk with FileOutputStream
+        FileOutputStream f_out = new FileOutputStream(selectedFileAbsolutPath);
+        // UPDATE title bar with filename? Keep track of unsaved changes?
+        // Write object with ObjectOutputStream
+        ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
+        // Write object out to disk
+        obj_out.writeObject ( shapes );
+        obj_out.flush();
+        obj_out.close();
+        m_fileBaseName = selectedFileBasename;
+
+        // ugly to have such a side-effect in here?
+        // if so, how to better change window/JFrame's title?
+        JFrame myWindow = (JFrame)SwingUtilities.getRoot(this);
+        myWindow.setTitle("Painter - " + selectedFileBasename);
+        // might setDirectory(  fc.getSelectedFile().get_?_Directory()  )
+        System.out.println("Saved  "+selectedFileAbsolutPath+", shapeCount: "+shapeCount);
+      } catch (IOException ioe) {
+        System.out.println("Cannot2");
+      }
     }
 
    }
