@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public abstract class MyBoundedShape extends MyShape
 {
    private boolean filled; // whether this shape is filled
-   
+
    // call default superclass constructor
    public MyBoundedShape()
    {
@@ -45,13 +45,13 @@ public abstract class MyBoundedShape extends MyShape
    {
       return Math.abs(getY2() - getY1());
    } // end method getHeight
-   
+
    // determines whether this shape is filled
    public boolean isFilled()
    {
       return filled;
    } // end method is filled
-   
+
    // sets whether this shape is filled
    public void setFilled(boolean isFilled)
    {

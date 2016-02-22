@@ -22,7 +22,7 @@ public class MyRect extends MyBoundedShape
    public void draw(Graphics g)
    {
       g.setColor(getColor());
-      
+
       if (isFilled())
          g.fillRect(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());

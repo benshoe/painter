@@ -3,7 +3,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public abstract class MyShape
+public abstract class MyShape implements java.io.Serializable
 {
    private int x1; // x coordinate of first endpoint
    private int y1; // y coordinate of first endpoint

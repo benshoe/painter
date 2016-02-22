@@ -22,7 +22,7 @@ public class MyOval extends MyBoundedShape
    public void draw(Graphics g)
    {
       g.setColor(getColor());
-      
+
       if (isFilled())
          g.fillOval(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());

@@ -1,4 +1,4 @@
-// GCS Exercise 14.17 Solution: DrawFrame.java
+
 // Program that creates a panel for the user to draw shapes.
 // Allows the user to choose the shape and color.
 import java.awt.BorderLayout;
@@ -23,28 +23,30 @@ public class DrawFrame extends JFrame
       Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY,
       Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE,
       Color.YELLOW};
-   
+
    // Array of names corresponding to the possible colors
    private String[] colorNames = {"Black", "Blue", "Cyan", "Dark Gray",
       "Gray", "Green", "Light Gray", "Magenta", "Orange", "Pink", "Red",
       "White", "Yellow"};
-   
+
    // Array of possible shapes
    private String[] shapes = {"Line", "Oval", "Rectangle"};
-   
+
    private DrawPanel drawPanel; // panel that handles the drawing
-   
+
    private JButton undoButton; // button to undo the last shape drawn
    private JButton clearButton; // button to clear all shapes
+   private JButton openFileButton; // button to open existing image
+   private JButton saveFileButton; // button to save to file
    private JComboBox<String> colorChoices; // combo box for selecting the color
    private JComboBox<String> shapeChoices; // combo box for selecting shapes
    private JCheckBox filledCheckBox; // check box to toggle filled shapes
-   
+
    // constructor
    public DrawFrame()
    {
-      super("Painter");
-      
+      super("Painter - New document");
+
       // create a panel to store the components at the top of the frame
       JPanel topPanel = new JPanel();
 
@@ -56,36 +58,46 @@ public class DrawFrame extends JFrame
       // create a combobox for choosing shapes
       shapeChoices = new JComboBox<String>(shapes);
       shapeChoices.addItemListener(this);
-      topPanel.add(shapeChoices);      
+      topPanel.add(shapeChoices);
 
       // create a checkbox to determine whether the shape is filled
       filledCheckBox = new JCheckBox("Filled");
       filledCheckBox.addItemListener(this);
       topPanel.add(filledCheckBox);
 
+      /*
       // create a button for clearing the last drawing
       undoButton = new JButton("Undo");
       undoButton.addActionListener(this);
       topPanel.add(undoButton);
-      
+
       // create a button for clearing all drawings
       clearButton = new JButton("Clear");
       clearButton.addActionListener(this);
       topPanel.add(clearButton);
+      */
+
+      openFileButton = new JButton("Open");
+      openFileButton.addActionListener(this);
+      topPanel.add(openFileButton);
+
+      saveFileButton = new JButton("Save");
+      saveFileButton.addActionListener(this);
+      topPanel.add(saveFileButton);
 
       // add the top panel to the frame
       add(topPanel, BorderLayout.NORTH);
-      
+
       // create a label for the status bar
       JLabel statusLabel = new JLabel("(0,0)");
 
       // add the status bar at the bottom
       add(statusLabel, BorderLayout.SOUTH);
-            
+
       // create the DrawPanel with its status bar label
       drawPanel = new DrawPanel(statusLabel);
-      
-      add(drawPanel); // add the drawing area to the center      
+
+      add(drawPanel); // add the drawing area to the center
    } // end DrawFrame constructor
 
    // handle selections made to a combobox or checkbox
@@ -107,6 +119,10 @@ public class DrawFrame extends JFrame
          drawPanel.clearLastShape();
       else if (e.getSource() == clearButton)
          drawPanel.clearDrawing();
+      else if (e.getSource() == openFileButton)
+        drawPanel.openFileDialog();
+      else if (e.getSource() == saveFileButton)
+        drawPanel.saveFileDialog();
    } // end method actionPerformed
 } // end class DrawFrame
 
