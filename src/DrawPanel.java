@@ -15,8 +15,8 @@ import javax.swing.SwingUtilities; // ugly2?
 
 public class DrawPanel extends JPanel
 {
-   ArrayList<MyShape> shapes; // Array holding all shapes of drawing
-   private int shapeCount; // total number of shapes
+   ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
+    ArrayList<MyShape> removedShapes = new ArrayList<>();
    private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
    private int shapeType; // the type of shape to draw
@@ -29,8 +29,6 @@ public class DrawPanel extends JPanel
    // constructor
    public DrawPanel(JLabel status)
    {
-      shapes = new ArrayList<MyShape>();
-      shapeCount = 0; // initially we have no shapes
 
       setShapeType(0); // initially draw lines
       setDrawingColor(Color.BLACK); // start drawing with black
@@ -79,17 +77,28 @@ public class DrawPanel extends JPanel
    // clears the last shape drawn
    public void clearLastShape()
    {
-      if (shapeCount > 0)
+      if (shapes.size() > 0)
       {
-         shapeCount--;
-         repaint();
+          MyShape removedShape = shapes.remove(shapes.size() - 1);
+          removedShapes.add(removedShape);
+          repaint();
       } // end if
    } // end method clearLastShape
+
+    public void redoLastRemovedShape() {
+        if(removedShapes.size() == 0) {
+            return;
+        }
+        MyShape lastRemovedShape = removedShapes.remove(removedShapes.size() - 1);
+        shapes.add(lastRemovedShape);
+        repaint();
+    }
 
    // clears all drawings on this panel
    public void clearDrawing()
    {
-      shapeCount = 0;
+       removedShapes.addAll(shapes);
+       shapes = new ArrayList<>();
       repaint();
    } // end method clearDrawing
 
@@ -126,7 +135,6 @@ public class DrawPanel extends JPanel
       // What about bad/wrong/corrupt files? Catch them somehow?
       shapes = (ArrayList<MyShape>) obj_in.readObject();
       obj_in.close();
-      shapeCount = shapes.size();
       repaint();
       System.out.println("Opened "+fileNameToOpen+", shapeCount: " + shapes.size());
 
@@ -183,7 +191,7 @@ public class DrawPanel extends JPanel
         JFrame myWindow = (JFrame)SwingUtilities.getRoot(this);
         myWindow.setTitle("Painter - " + selectedFileBasename);
         // might setDirectory(  fc.getSelectedFile().get_?_Directory()  )
-        System.out.println("Saved  "+selectedFileAbsolutPath+", shapeCount: "+shapeCount);
+        System.out.println("Saved  "+selectedFileAbsolutPath+", shapeCount: "+shapes.size());
       } catch (IOException ioe) {
         System.out.println("Cannot2");
       }
@@ -191,7 +199,7 @@ public class DrawPanel extends JPanel
 
    }
 
-   // handles mouse events for this JPanel
+    // handles mouse events for this JPanel
    private class MouseHandler extends MouseAdapter
       implements MouseMotionListener
    {
@@ -232,7 +240,6 @@ public class DrawPanel extends JPanel
          // set the shape only if there is room in the array
          // as we switched to arrayList, this is only limited to system memory...
          shapes.add(currentShape);
-         shapeCount++;
 
          currentShape = null; // clear the temporary drawing shape
          repaint();
