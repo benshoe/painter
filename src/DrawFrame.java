@@ -3,7 +3,6 @@
 // Allows the user to choose the shape and color.
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -34,8 +33,6 @@ public class DrawFrame extends JFrame
 
    private DrawPanel drawPanel; // panel that handles the drawing
 
-   private JButton undoButton; // button to undo the last shape drawn
-   private JButton clearButton; // button to clear all shapes
    private JButton openFileButton; // button to open existing image
    private JButton saveFileButton; // button to save to file
    private JComboBox<String> colorChoices; // combo box for selecting the color
@@ -49,6 +46,25 @@ public class DrawFrame extends JFrame
 
       // create a panel to store the components at the top of the frame
       JPanel topPanel = new JPanel();
+      ComponentPanel componentPanel = new ComponentPanel();
+      componentPanel.setOnUndoClicked(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            drawPanel.clearLastShape();
+         }
+      });
+      componentPanel.setOnClearClicked(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            drawPanel.clearDrawing();
+         }
+      });
+      componentPanel.setOnRedoClicked(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            drawPanel.redoLastRemovedShape();
+         }
+      });
 
       // create a combobox for choosing colors
       colorChoices = new JComboBox<String>(colorNames);
@@ -65,18 +81,6 @@ public class DrawFrame extends JFrame
       filledCheckBox.addItemListener(this);
       topPanel.add(filledCheckBox);
 
-      /*
-      // create a button for clearing the last drawing
-      undoButton = new JButton("Undo");
-      undoButton.addActionListener(this);
-      topPanel.add(undoButton);
-
-      // create a button for clearing all drawings
-      clearButton = new JButton("Clear");
-      clearButton.addActionListener(this);
-      topPanel.add(clearButton);
-      */
-
       openFileButton = new JButton("Open");
       openFileButton.addActionListener(this);
       topPanel.add(openFileButton);
@@ -87,6 +91,7 @@ public class DrawFrame extends JFrame
 
       // add the top panel to the frame
       add(topPanel, BorderLayout.NORTH);
+      add(componentPanel, BorderLayout.WEST);
 
       // create a label for the status bar
       JLabel statusLabel = new JLabel("(0,0)");
@@ -115,11 +120,11 @@ public class DrawFrame extends JFrame
    // handle button clicks
    public void actionPerformed(ActionEvent e)
    {
-      if (e.getSource() == undoButton)
-         drawPanel.clearLastShape();
-      else if (e.getSource() == clearButton)
-         drawPanel.clearDrawing();
-      else if (e.getSource() == openFileButton)
+//      if (e.getSource() == undoButton)
+//
+//      else if (e.getSource() == clearButton)
+//         drawPanel.clearDrawing();
+      if (e.getSource() == openFileButton)
         drawPanel.openFileDialog();
       else if (e.getSource() == saveFileButton)
         drawPanel.saveFileDialog();
