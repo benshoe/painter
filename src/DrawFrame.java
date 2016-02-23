@@ -8,17 +8,6 @@ import java.awt.event.*;
 public class DrawFrame extends JFrame
    implements ItemListener, ActionListener
 {
-   // Array of possible colors
-   private Color[] colors = {Color.BLACK, Color.BLUE, Color.CYAN,
-      Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY,
-      Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.WHITE,
-      Color.YELLOW};
-
-   // Array of names corresponding to the possible colors
-   private String[] colorNames = {"Black", "Blue", "Cyan", "Dark Gray",
-      "Gray", "Green", "Light Gray", "Magenta", "Orange", "Pink", "Red",
-      "White", "Yellow"};
-
    // Array of possible shapes
    private String[] shapes = {"Line", "Oval", "Rectangle"};
 
@@ -26,7 +15,6 @@ public class DrawFrame extends JFrame
 
    private JButton openFileButton; // button to open existing image
    private JButton saveFileButton; // button to save to file
-   private JComboBox<String> colorChoices; // combo box for selecting the color
    private JComboBox<String> shapeChoices; // combo box for selecting shapes
    private JCheckBox filledCheckBox; // check box to toggle filled shapes
 
@@ -58,11 +46,13 @@ public class DrawFrame extends JFrame
             drawPanel.redoLastRemovedShape();
          }
       });
-
-      // create a combobox for choosing colors
-      colorChoices = new JComboBox<String>(colorNames);
-      colorChoices.addItemListener(this);
-      topPanel.add(colorChoices);
+      componentPanel.setOnColorPickerClicked(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            final String nm = e.getActionCommand();
+            drawPanel.setDrawingColor(Color.decode(nm));
+         }
+      });
 
       // create a combobox for choosing shapes
       shapeChoices = new JComboBox<String>(shapes);
@@ -112,9 +102,6 @@ public class DrawFrame extends JFrame
    {
       if (e.getSource() == shapeChoices) // choosing a shape
          drawPanel.setShapeType(shapeChoices.getSelectedIndex());
-      else if (e.getSource() == colorChoices) // choosing a color
-         drawPanel.setDrawingColor(
-            colors[colorChoices.getSelectedIndex()]);
       else if (e.getSource() == filledCheckBox) // filled/unfilled
          drawPanel.setFilledShape(filledCheckBox.isSelected());
    } // end method itemStateChanged
@@ -122,10 +109,6 @@ public class DrawFrame extends JFrame
    // handle button clicks
    public void actionPerformed(ActionEvent e)
    {
-//      if (e.getSource() == undoButton)
-//
-//      else if (e.getSource() == clearButton)
-//         drawPanel.clearDrawing();
       if (e.getSource() == openFileButton)
         drawPanel.openFileDialog();
       else if (e.getSource() == saveFileButton)

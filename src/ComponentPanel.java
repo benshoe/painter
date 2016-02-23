@@ -1,6 +1,6 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * Created by ben on 22-02-16.
@@ -10,10 +10,13 @@ public final class ComponentPanel extends JPanel {
     private ActionListener onClearClicked;
     private ActionListener onUndoClicked;
     private ActionListener onRedoClicked;
+    private ActionListener onColorPickerClicked;
 
     private JButton undoButton; // button to undo the last shape drawn
     private JButton redoButton; // button to redo the last shape removed
     private JButton clearButton; // button to clear all shapes
+    private JButton colorButton;
+
 
     public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -50,17 +53,33 @@ public final class ComponentPanel extends JPanel {
         });
         add(clearButton);
 
+        colorButton = new JButton("Color");
+        colorButton.setToolTipText("Choose a color");
+        colorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
+                ActionEvent ae = new ActionEvent(e, 100, String.valueOf(newColor.getRGB()));
+                onColorPickerClicked.actionPerformed(ae);
+            }
+        });
+        add(colorButton);
+
     }
 
-    public void setOnUndoClicked(ActionListener onUndoClicked) {
+    void setOnUndoClicked(ActionListener onUndoClicked) {
         this.onUndoClicked = onUndoClicked;
     }
 
-    public void setOnRedoClicked(ActionListener onRedoClicked) {
+    void setOnRedoClicked(ActionListener onRedoClicked) {
         this.onRedoClicked = onRedoClicked;
     }
 
-    public void setOnClearClicked(ActionListener onClearClicked) {
+    void setOnClearClicked(ActionListener onClearClicked) {
         this.onClearClicked = onClearClicked;
+    }
+
+    void setOnColorPickerClicked(ActionListener onColorPickerClicked) {
+        this.onColorPickerClicked = onColorPickerClicked;
     }
 }
