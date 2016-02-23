@@ -53,6 +53,13 @@ public class DrawFrame extends JFrame
             drawPanel.setDrawingColor(Color.decode(nm));
          }
       });
+	   componentPanel.setOnLineThicknessSelected(new ActionListener() {
+		   @Override
+		   public void actionPerformed(ActionEvent e) {
+			   final String nm = e.getActionCommand();
+			   drawPanel.setLineThickness(nm);
+		   }
+	   });
 
       // create a combobox for choosing shapes
       shapeChoices = new JComboBox<String>(shapes);

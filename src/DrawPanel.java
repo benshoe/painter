@@ -16,6 +16,7 @@ public class DrawPanel extends JPanel
    private MyShape currentShape; // the current shape being drawn
    private Color currentColor; // the color of the shape
    private boolean filledShape; // whether this shape is filled
+    private String lineThickness;
 
    private JLabel statusLabel; // label displaying mouse coordinates
 
@@ -74,6 +75,10 @@ public class DrawPanel extends JPanel
    {
       currentColor = c;
    } // end method setDrawingColor
+
+    public void setLineThickness(String lineThickness) {
+        this.lineThickness = lineThickness;
+    }
 
    // clears the last shape drawn
    public void clearLastShape()
@@ -226,6 +231,7 @@ public class DrawPanel extends JPanel
                   e.getX(), e.getY(), currentColor, filledShape);
                break;
          } // end switch
+          currentShape.setStroke(getStroke());
       } // end method mousePressed
 
       // fixes the current shape onto the panel
@@ -266,6 +272,19 @@ public class DrawPanel extends JPanel
             String.format("(%d,%d)", e.getX(), e.getY()));
       } // end method mouseMoved
    } // end class MouseHandler
+
+    private BasicStroke getStroke() {
+        switch(lineThickness) {
+            case "Thin":
+                return new BasicStroke(1);
+            case "Middle":
+                return new BasicStroke(2);
+            case "Thick":
+                return new BasicStroke(3);
+            default:
+                return new BasicStroke(1);
+        }
+    }
 } // end class DrawPanel
 
 

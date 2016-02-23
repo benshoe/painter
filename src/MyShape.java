@@ -1,7 +1,6 @@
 // GCS Exercise 10.2 Solution: MyShape.java
 // Declaration of class MyShape.
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public abstract class MyShape implements java.io.Serializable
 {
@@ -10,6 +9,7 @@ public abstract class MyShape implements java.io.Serializable
    private int x2; // x coordinate of second endpoint
    private int y2; // y coordinate of second endpoint
    private Color myColor; // color of this shape
+   private BasicStroke stroke = new BasicStroke(1);
 
    // default constructor initializes values with 0
    public MyShape()
@@ -89,6 +89,14 @@ public abstract class MyShape implements java.io.Serializable
 
    // abstract draw method
    public abstract void draw(Graphics g);
+
+   protected BasicStroke getStroke() {
+      return stroke;
+   }
+
+   public void setStroke(BasicStroke stroke) {
+      this.stroke = stroke;
+   }
 } // end class MyShape
 
 

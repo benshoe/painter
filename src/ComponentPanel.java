@@ -11,14 +11,17 @@ public final class ComponentPanel extends JPanel {
     private ActionListener onUndoClicked;
     private ActionListener onRedoClicked;
     private ActionListener onColorPickerClicked;
+	private ActionListener onLineThicknessSelected;
 
     private JButton undoButton; // button to undo the last shape drawn
     private JButton redoButton; // button to redo the last shape removed
     private JButton clearButton; // button to clear all shapes
-    private JButton colorButton;
+    private JButton colorButton; // button to choose colors
+	private JComboBox<String> basicStrokeCombo;
 
 
-    public ComponentPanel() {
+
+	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // create a button for clearing the last drawing
@@ -65,7 +68,18 @@ public final class ComponentPanel extends JPanel {
         });
         add(colorButton);
 
-    }
+		basicStrokeCombo = new JComboBox<>(new String[]{"Thin", "Middle", "Thick"});
+		add(basicStrokeCombo);
+		basicStrokeCombo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final Object selectedItem = basicStrokeCombo.getSelectedItem();
+				ActionEvent ae = new ActionEvent(e, 200, selectedItem.toString());
+				onLineThicknessSelected.actionPerformed(ae);
+			}
+		});
+
+	}
 
     void setOnUndoClicked(ActionListener onUndoClicked) {
         this.onUndoClicked = onUndoClicked;
@@ -82,4 +96,8 @@ public final class ComponentPanel extends JPanel {
     void setOnColorPickerClicked(ActionListener onColorPickerClicked) {
         this.onColorPickerClicked = onColorPickerClicked;
     }
+
+	void setOnLineThicknessSelected(ActionListener onLineThicknessSelected) {
+		this.onLineThicknessSelected = onLineThicknessSelected;
+	}
 }

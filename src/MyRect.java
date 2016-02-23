@@ -1,7 +1,6 @@
 // GCS Exercise 10.2 Solution: MyRect.java
 // Declaration of class MyRect.
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class MyRect extends MyBoundedShape
 {
@@ -21,13 +20,15 @@ public class MyRect extends MyBoundedShape
    // draw rectangle
    public void draw(Graphics g)
    {
-      g.setColor(getColor());
+      Graphics2D graphics2D = (Graphics2D) g;
+      graphics2D.setColor(getColor());
+      graphics2D.setStroke(getStroke());
 
       if (isFilled())
-         g.fillRect(getUpperLeftX(), getUpperLeftY(),
+         graphics2D.fillRect(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());
       else
-         g.drawRect(getUpperLeftX(), getUpperLeftY(),
+         graphics2D.drawRect(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());
    } // end method draw
 } // end class MyRect

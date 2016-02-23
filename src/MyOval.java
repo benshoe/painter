@@ -1,7 +1,6 @@
 // GCS Exercise 10.2 Solution: MyOval.java
 // Declaration of class MyOval.
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class MyOval extends MyBoundedShape
 {
@@ -21,13 +20,15 @@ public class MyOval extends MyBoundedShape
    // draw oval
    public void draw(Graphics g)
    {
-      g.setColor(getColor());
+      Graphics2D graphics2D = (Graphics2D) g;
+      graphics2D.setColor(getColor());
+      graphics2D.setStroke(getStroke());
 
       if (isFilled())
-         g.fillOval(getUpperLeftX(), getUpperLeftY(),
+         graphics2D.fillOval(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());
       else
-         g.drawOval(getUpperLeftX(), getUpperLeftY(),
+         graphics2D.drawOval(getUpperLeftX(), getUpperLeftY(),
             getWidth(), getHeight());
    } // end method draw
 } // end class MyOval

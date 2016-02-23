@@ -1,7 +1,6 @@
 // GCS Exercise 10.2 Solution: MyBoundedShape.java
 // Declaration of class MyBoundedShape.
 import java.awt.Color;
-import java.awt.Graphics;
 
 public abstract class MyBoundedShape extends MyShape
 {
