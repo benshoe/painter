@@ -1,18 +1,9 @@
 // GCS Exercise 14.17 Solution: DrawFrame.java
 // Program that creates a panel for the user to draw shapes.
 // Allows the user to choose the shape and color.
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class DrawFrame extends JFrame
    implements ItemListener, ActionListener
@@ -43,6 +34,8 @@ public class DrawFrame extends JFrame
    public DrawFrame()
    {
       super("Painter - New file.painter");
+
+      setLookAndFeel();
 
       // create a panel to store the components at the top of the frame
       JPanel topPanel = new JPanel();
@@ -104,6 +97,15 @@ public class DrawFrame extends JFrame
 
       add(drawPanel); // add the drawing area to the center
    } // end DrawFrame constructor
+
+   private void setLookAndFeel() {
+      try {
+         UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+         SwingUtilities.updateComponentTreeUI(this);
+      } catch (Exception e) {
+         System.out.println("Could not load look and feel " + e);
+      }
+   }
 
    // handle selections made to a combobox or checkbox
    public void itemStateChanged(ItemEvent e)

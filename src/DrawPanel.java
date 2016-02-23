@@ -1,17 +1,10 @@
 // GCS Exercise 14.17 Solution: DrawPanel.java
 // JPanel that allows the user to draw shapes with the mouse.
-import java.io.*; // Just inputStream and OutputStream required...
-import java.util.ArrayList;
-import javax.swing.JFileChooser;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JFrame; // ugly?
-import javax.swing.SwingUtilities; // ugly2?
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
 
 public class DrawPanel extends JPanel
 {
@@ -50,6 +43,14 @@ public class DrawPanel extends JPanel
    public void paintComponent(Graphics g)
    {
       super.paintComponent(g);
+
+       Graphics2D graphics2D = (Graphics2D) g;
+
+       // Set anti-alias!
+       graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+       // Set anti-alias for text
+       graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
       for (MyShape s : shapes) {
         s.draw(g);
