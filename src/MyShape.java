@@ -30,7 +30,7 @@ public abstract class MyShape implements java.io.Serializable
    // set the x-coordinate of the first point
    public void setX1(int x1)
    {
-     this.x1 = (x1 >= 0 ? x1 : 0);
+     this.x1 = x1;
    } // end method setX1
 
    // get the x-coordinate of the first point
@@ -42,7 +42,7 @@ public abstract class MyShape implements java.io.Serializable
    // set the x-coordinate of the second point
    public void setX2(int x2)
    {
-     this.x2 = (x2 >= 0 ? x2 : 0);
+     this.x2 = x2;
    } // end method setX2
 
    // get the x-coordinate of the second point
@@ -54,7 +54,7 @@ public abstract class MyShape implements java.io.Serializable
    // set the y-coordinate of the first point
    public void setY1(int y1)
    {
-     this.y1 = (y1 >= 0 ? y1 : 0);
+     this.y1 = y1;
    } // end method setY1
 
    // get the y-coordinate of the first point
@@ -66,7 +66,7 @@ public abstract class MyShape implements java.io.Serializable
    // set the y-coordinate of the second point
    public void setY2(int y2)
    {
-     this.y2 = (y2 >= 0 ? y2 : 0);
+     this.y2 = y2;
    } // end method setY2
 
    // get the y-coordinate of the second point
