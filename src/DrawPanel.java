@@ -6,9 +6,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-public class DrawPanel extends JPanel
-{
-   ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
+public class DrawPanel extends JPanel {
+
+   	ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
     ArrayList<MyShape> removedShapes = new ArrayList<>();
    private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
@@ -16,6 +16,7 @@ public class DrawPanel extends JPanel
    private MyShape currentShape; // the current shape being drawn
    private Color currentColor; // the color of the shape
    private boolean filledShape; // whether this shape is filled
+    private LineThickness lineThickness = LineThickness.THIN;
 
    private JLabel statusLabel; // label displaying mouse coordinates
 
@@ -74,6 +75,10 @@ public class DrawPanel extends JPanel
    {
       currentColor = c;
    } // end method setDrawingColor
+
+    public void setLineThickness(LineThickness lineThickness) {
+        this.lineThickness = lineThickness;
+    }
 
    // clears the last shape drawn
    public void clearLastShape()
@@ -226,6 +231,7 @@ public class DrawPanel extends JPanel
                   e.getX(), e.getY(), currentColor, filledShape);
                break;
          } // end switch
+          currentShape.setStroke(getStroke());
       } // end method mousePressed
 
       // fixes the current shape onto the panel
@@ -266,6 +272,10 @@ public class DrawPanel extends JPanel
             String.format("(%d,%d)", e.getX(), e.getY()));
       } // end method mouseMoved
    } // end class MouseHandler
+
+    private BasicStroke getStroke() {
+        return new BasicStroke(lineThickness.getThickness());
+    }
 } // end class DrawPanel
 
 

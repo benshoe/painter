@@ -1,7 +1,6 @@
 // GCS Exercise 10.2 Solution: MyLine.java
 // Declaration of class MyLine.
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class MyLine extends MyShape
 {
@@ -20,6 +19,10 @@ public class MyLine extends MyShape
    // draw line in specified color
    public void draw(Graphics g)
    {
+      Graphics2D graphics2D = (Graphics2D) g;
+      graphics2D.setColor(getColor());
+      graphics2D.setStroke(getStroke());
+
       g.setColor(getColor());
       g.drawLine(getX1(), getY1(), getX2(), getY2());
    } // end method draw

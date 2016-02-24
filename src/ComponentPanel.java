@@ -11,14 +11,17 @@ public final class ComponentPanel extends JPanel {
     private ActionListener onUndoClicked;
     private ActionListener onRedoClicked;
     private ActionListener onColorPickerClicked;
+	private ActionListener onLineThicknessSelected;
 
     private JButton undoButton; // button to undo the last shape drawn
     private JButton redoButton; // button to redo the last shape removed
     private JButton clearButton; // button to clear all shapes
-    private JButton colorButton;
+    private JButton colorButton; // button to choose colors
+	private JComboBox<LineThickness> basicStrokeCombo;
 
 
-    public ComponentPanel() {
+
+	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // create a button for clearing the last drawing
@@ -59,13 +62,25 @@ public final class ComponentPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
-                ActionEvent ae = new ActionEvent(e, 100, String.valueOf(newColor.getRGB()));
+                ActionEvent ae = new ActionEvent(newColor, 0, "Color");
                 onColorPickerClicked.actionPerformed(ae);
             }
         });
         add(colorButton);
 
-    }
+        LineThickness[] lineThicknesses = LineThickness.values();
+		basicStrokeCombo = new JComboBox<>(lineThicknesses);
+		add(basicStrokeCombo);
+		basicStrokeCombo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final Object selectedItem = basicStrokeCombo.getSelectedItem();
+                ActionEvent ae = new ActionEvent(selectedItem, 1, selectedItem.toString());
+				onLineThicknessSelected.actionPerformed(ae);
+			}
+		});
+
+	}
 
     void setOnUndoClicked(ActionListener onUndoClicked) {
         this.onUndoClicked = onUndoClicked;
@@ -82,4 +97,8 @@ public final class ComponentPanel extends JPanel {
     void setOnColorPickerClicked(ActionListener onColorPickerClicked) {
         this.onColorPickerClicked = onColorPickerClicked;
     }
+
+	void setOnLineThicknessSelected(ActionListener onLineThicknessSelected) {
+		this.onLineThicknessSelected = onLineThicknessSelected;
+	}
 }

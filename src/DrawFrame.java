@@ -57,13 +57,18 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
       componentPanel.setOnColorPickerClicked(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
-            final String nm = e.getActionCommand();
-            drawPanel.setDrawingColor(Color.decode(nm));
+            drawPanel.setDrawingColor((Color) e.getSource());
          }
       });
+	   componentPanel.setOnLineThicknessSelected(new ActionListener() {
+		   @Override
+		   public void actionPerformed(ActionEvent e) {
+			   drawPanel.setLineThickness((LineThickness) e.getSource());
+		   }
+	   });
 
       // create a combobox for choosing shapes
-      shapeChoices = new JComboBox<String>(shapes);
+      shapeChoices = new JComboBox<>(shapes);
       shapeChoices.addItemListener(this);
       topPanel.add(shapeChoices);
 
