@@ -97,6 +97,10 @@ public abstract class MyShape implements java.io.Serializable
    public void setStroke(BasicStroke stroke) {
       this.stroke = stroke;
    }
+
+   public void printCoordinates() {
+      System.out.printf("(x1, y1) = (%d, %d); (x2, y2) = (%d, %d)\n", x1, y1, x2, y2);
+   }
 } // end class MyShape
 
 

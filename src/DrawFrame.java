@@ -37,12 +37,24 @@ it’s simpler than using one listener for multiple interface components.
 Inner classes look more complicated than separate classes, but they can simplify and
 shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Java 2 in 21 days, Sams.]
        */
-      componentPanel.setOnUndoClicked(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
-            drawPanel.clearLastShape();
-         }
-      });
+       componentPanel.setOnDrawModeClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
+               drawPanel.setDrawmode();
+           }
+       });
+       componentPanel.setOnSelectModeClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
+               drawPanel.setSelectmode();
+           }
+       });
+       componentPanel.setOnUndoClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
+               drawPanel.clearLastShape();
+           }
+       });
       componentPanel.setOnClearClicked(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {

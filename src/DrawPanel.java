@@ -18,8 +18,23 @@ public class DrawPanel extends JPanel {
     private Color currentColor; // the color of the shape
     private boolean filledShape; // whether this shape is filled
     private LineThickness lineThickness = LineThickness.THIN;
-
     private JLabel statusLabel; // label displaying mouse coordinates
+    private final MouseDrawHandler mouseDrawHandler;
+    private final MouseSelectHandler mouseSelectHandler;
+
+    public void setDrawmode() {
+        addMouseListener(mouseDrawHandler);
+        addMouseMotionListener(mouseDrawHandler);
+        removeMouseListener(mouseSelectHandler);
+        removeMouseMotionListener(mouseSelectHandler);
+    }
+
+    public void setSelectmode() {
+        addMouseListener(mouseSelectHandler);
+        addMouseMotionListener(mouseSelectHandler);
+        removeMouseListener(mouseDrawHandler);
+        removeMouseMotionListener(mouseDrawHandler);
+    }
 
     // constructor
     public DrawPanel(JLabel status) {
@@ -32,9 +47,10 @@ public class DrawPanel extends JPanel {
         setBackground(Color.WHITE); // set a white background
 
         // add the mouse listeners
-        MouseHandler mouseHandler = new MouseHandler();
-        addMouseListener(mouseHandler);
-        addMouseMotionListener(mouseHandler);
+        mouseDrawHandler = new MouseDrawHandler();
+        mouseSelectHandler = new MouseSelectHandler();
+        addMouseListener(mouseDrawHandler);
+        addMouseMotionListener(mouseDrawHandler);
 
         // set the status label for displaying mouse coordinates
         statusLabel = status;
@@ -75,6 +91,10 @@ public class DrawPanel extends JPanel {
 
     public void setLineThickness(LineThickness lineThickness) {
         this.lineThickness = lineThickness;
+    }
+
+    private BasicStroke getStroke() {
+        return new BasicStroke(lineThickness.getThickness());
     }
 
     // clears the last shape drawn
@@ -199,7 +219,7 @@ public class DrawPanel extends JPanel {
     }
 
     // handles mouse events for this JPanel
-    private class MouseHandler extends MouseAdapter
+    private class MouseDrawHandler extends MouseAdapter
             implements MouseMotionListener {
         // creates and sets the initial position for the new shape
         public void mousePressed(MouseEvent e) {
@@ -262,9 +282,53 @@ public class DrawPanel extends JPanel {
         } // end method mouseMoved
     } // end class MouseHandler
 
-    private BasicStroke getStroke() {
-        return new BasicStroke(lineThickness.getThickness());
+    // handles mouse events for this JPanel
+    private class MouseSelectHandler extends MouseAdapter
+            implements MouseMotionListener {
+
+        private int startX1;
+        private int startX2;
+        private int startY1;
+        private int startY2;
+        private int mouseX;
+        private int mouseY;
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            mouseX = e.getX();
+            mouseY = e.getY();
+            currentShape = findShapeAt(mouseX, mouseY);
+            if(currentShape != null) {
+                startX1 = currentShape.getX1();
+                startX2 = currentShape.getX2();
+                startY1 = currentShape.getY1();
+                startY2 = currentShape.getY2();
+            }
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if(currentShape != null) {
+                currentShape.setX1(startX1 + e.getX() - mouseX);
+                currentShape.setY1(startY1 + e.getY() - mouseY);
+                currentShape.setX2(startX2 + e.getX() - mouseX);
+                currentShape.setY2(startY2 + e.getY() - mouseY);
+                repaint();
+            }
+        }
     }
+
+    private MyShape findShapeAt(int x, int y) {
+        System.out.printf("(x, y) = (%d, %d)\n", x, y);
+        for (MyShape shape : shapes) {
+            if(x >= shape.getX1() && x <= shape.getX2() && y >= shape.getY1() && y <= shape.getY2()) {
+                shape.printCoordinates();
+                return shape;
+            }
+        }
+        return null;
+    }
+
 } // end class DrawPanel
 
 

@@ -11,9 +11,33 @@ public final class ComponentPanel extends JPanel {
     private MouseListener onUndoClicked;
     private MouseListener onRedoClicked;
     private MouseListener onColorClicked;
+    private MouseListener onDrawModeClicked;
+    private MouseListener onSelectModeClicked;
 
 	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        Icon drawModeIcon = new ImageIcon(getClass().getResource(Images.OVAL));
+        JLabel drawModeLable = new JLabel(drawModeIcon);
+        drawModeLable.setToolTipText("Draw mode");
+        drawModeLable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onDrawModeClicked.mouseClicked(e);
+            }
+        });
+        add(drawModeLable);
+
+        Icon selectModeIcon = new ImageIcon(getClass().getResource(Images.START));
+        JLabel selectModeLable = new JLabel(selectModeIcon);
+        selectModeLable.setToolTipText("Select mode");
+        selectModeLable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onSelectModeClicked.mouseClicked(e);
+            }
+        });
+        add(selectModeLable);
 
         Icon undoIcon = new ImageIcon(getClass().getResource(Images.UNDO));
         JLabel undoLabel = new JLabel(undoIcon);
@@ -63,6 +87,14 @@ public final class ComponentPanel extends JPanel {
         add(colorLabel);
 
 	}
+
+    void setOnSelectModeClicked(MouseListener onSelectModeClicked) {
+        this.onSelectModeClicked = onSelectModeClicked;
+    }
+
+    void setOnDrawModeClicked(MouseListener onDrawModeClicked) {
+        this.onDrawModeClicked = onDrawModeClicked;
+    }
 
     void setOnUndoClicked(MouseListener onUndoClicked) {
         this.onUndoClicked = onUndoClicked;
