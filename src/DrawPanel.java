@@ -274,16 +274,7 @@ public class DrawPanel extends JPanel {
    } // end class MouseHandler
 
     private BasicStroke getStroke() {
-        switch(lineThickness) {
-			case THIN:
-                return new BasicStroke(1);
-			case MIDDLE:
-                return new BasicStroke(2);
-			case THICK:
-                return new BasicStroke(3);
-            default:
-                return new BasicStroke(1);
-        }
+        return new BasicStroke(lineThickness.getThickness());
     }
 } // end class DrawPanel
 
