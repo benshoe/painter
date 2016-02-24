@@ -28,6 +28,14 @@ public class DrawFrame extends JFrame
       // create a panel to store the components at the top of the frame
       JPanel topPanel = new JPanel();
       ComponentPanel componentPanel = new ComponentPanel();
+      /*
+      The anonymous inner class is an object that implements the ActionListener
+interface. The object’s actionPerformed() method is overridden to set the frame’s
+title when the corresponding button is clicked. Because each button has its own listener,
+it’s simpler than using one listener for multiple interface components.
+Inner classes look more complicated than separate classes, but they can simplify and
+shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Java 2 in 21 days, Sams.]
+       */
       componentPanel.setOnUndoClicked(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
