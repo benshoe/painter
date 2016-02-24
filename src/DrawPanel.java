@@ -17,6 +17,7 @@ public class DrawPanel extends JPanel {
    private Color currentColor; // the color of the shape
    private boolean filledShape; // whether this shape is filled
     private LineThickness lineThickness = LineThickness.THIN;
+    private ActionListener onLineThicknessSelected;
 
    private JLabel statusLabel; // label displaying mouse coordinates
 

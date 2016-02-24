@@ -17,6 +17,7 @@ public class DrawFrame extends JFrame
    private JButton saveFileButton; // button to save to file
    private JComboBox<String> shapeChoices; // combo box for selecting shapes
    private JCheckBox filledCheckBox; // check box to toggle filled shapes
+   private JComboBox<LineThickness> basicStrokeCombo;
 
    // constructor
    public DrawFrame()
@@ -36,36 +37,41 @@ it’s simpler than using one listener for multiple interface components.
 Inner classes look more complicated than separate classes, but they can simplify and
 shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Java 2 in 21 days, Sams.]
        */
-      componentPanel.setOnUndoClicked(new ActionListener() {
+      componentPanel.setOnUndoClicked(new MouseAdapter() {
          @Override
-         public void actionPerformed(ActionEvent e) {
+         public void mouseClicked(MouseEvent e) {
             drawPanel.clearLastShape();
          }
       });
-      componentPanel.setOnClearClicked(new ActionListener() {
+      componentPanel.setOnClearClicked(new MouseAdapter() {
          @Override
-         public void actionPerformed(ActionEvent e) {
+         public void mouseClicked(MouseEvent e) {
             drawPanel.clearDrawing();
          }
       });
-      componentPanel.setOnRedoClicked(new ActionListener() {
+      componentPanel.setOnRedoClicked(new MouseAdapter() {
          @Override
-         public void actionPerformed(ActionEvent e) {
+         public void mouseClicked(MouseEvent e) {
             drawPanel.redoLastRemovedShape();
          }
       });
-      componentPanel.setOnColorPickerClicked(new ActionListener() {
+      componentPanel.setOnColorClicked(new MouseAdapter() {
          @Override
-         public void actionPerformed(ActionEvent e) {
+         public void mouseClicked(MouseEvent e) {
             drawPanel.setDrawingColor((Color) e.getSource());
          }
       });
-	   componentPanel.setOnLineThicknessSelected(new ActionListener() {
-		   @Override
-		   public void actionPerformed(ActionEvent e) {
-			   drawPanel.setLineThickness((LineThickness) e.getSource());
-		   }
-	   });
+
+      LineThickness[] lineThicknesses = LineThickness.values();
+      basicStrokeCombo = new JComboBox<>(lineThicknesses);
+      topPanel.add(basicStrokeCombo);
+      basicStrokeCombo.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+            final Object selectedItem = basicStrokeCombo.getSelectedItem();
+            drawPanel.setLineThickness((LineThickness) selectedItem);
+         }
+      });
 
       // create a combobox for choosing shapes
       shapeChoices = new JComboBox<>(shapes);
