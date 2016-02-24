@@ -65,7 +65,7 @@ public class DrawPanel extends JPanel {
    // sets the type of shape to draw
    public void setShapeType(int shapeType)
    {
-      if (shapeType < 0 || shapeType > 2)
+      if (shapeType < 0 || shapeType > 3)
          shapeType = 0;
 
       this.shapeType = shapeType;
@@ -231,6 +231,9 @@ public class DrawPanel extends JPanel {
                currentShape = new MyRect(e.getX(), e.getY(),
                   e.getX(), e.getY(), currentColor, filledShape);
                break;
+             case 3:
+                 currentShape = new MyText(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                 break;
          } // end switch
           currentShape.setStroke(getStroke());
       } // end method mousePressed
