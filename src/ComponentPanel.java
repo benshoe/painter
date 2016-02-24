@@ -17,7 +17,7 @@ public final class ComponentPanel extends JPanel {
     private JButton redoButton; // button to redo the last shape removed
     private JButton clearButton; // button to clear all shapes
     private JButton colorButton; // button to choose colors
-	private JComboBox<String> basicStrokeCombo;
+	private JComboBox<LineThickness> basicStrokeCombo;
 
 
 
@@ -62,19 +62,20 @@ public final class ComponentPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
-                ActionEvent ae = new ActionEvent(e, 100, String.valueOf(newColor.getRGB()));
+                ActionEvent ae = new ActionEvent(newColor, 0, "Color");
                 onColorPickerClicked.actionPerformed(ae);
             }
         });
         add(colorButton);
 
-		basicStrokeCombo = new JComboBox<>(new String[]{"Thin", "Middle", "Thick"});
+        LineThickness[] lineThicknesses = LineThickness.values();
+		basicStrokeCombo = new JComboBox<>(lineThicknesses);
 		add(basicStrokeCombo);
 		basicStrokeCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final Object selectedItem = basicStrokeCombo.getSelectedItem();
-				ActionEvent ae = new ActionEvent(e, 200, selectedItem.toString());
+                ActionEvent ae = new ActionEvent(selectedItem, 1, selectedItem.toString());
 				onLineThicknessSelected.actionPerformed(ae);
 			}
 		});

@@ -6,9 +6,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-public class DrawPanel extends JPanel
-{
-   ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
+public class DrawPanel extends JPanel {
+
+   	ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
     ArrayList<MyShape> removedShapes = new ArrayList<>();
    private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
@@ -16,7 +16,7 @@ public class DrawPanel extends JPanel
    private MyShape currentShape; // the current shape being drawn
    private Color currentColor; // the color of the shape
    private boolean filledShape; // whether this shape is filled
-    private String lineThickness;
+    private LineThickness lineThickness = LineThickness.THIN;
 
    private JLabel statusLabel; // label displaying mouse coordinates
 
@@ -76,7 +76,7 @@ public class DrawPanel extends JPanel
       currentColor = c;
    } // end method setDrawingColor
 
-    public void setLineThickness(String lineThickness) {
+    public void setLineThickness(LineThickness lineThickness) {
         this.lineThickness = lineThickness;
     }
 
@@ -275,11 +275,11 @@ public class DrawPanel extends JPanel
 
     private BasicStroke getStroke() {
         switch(lineThickness) {
-            case "Thin":
+			case THIN:
                 return new BasicStroke(1);
-            case "Middle":
+			case MIDDLE:
                 return new BasicStroke(2);
-            case "Thick":
+			case THICK:
                 return new BasicStroke(3);
             default:
                 return new BasicStroke(1);
