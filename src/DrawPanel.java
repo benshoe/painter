@@ -302,6 +302,7 @@ public class DrawPanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
+            DrawPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
             mouseX = e.getX();
             mouseY = e.getY();
             currentShape = findShapeAt(mouseX, mouseY);
@@ -311,6 +312,11 @@ public class DrawPanel extends JPanel {
                 startY1 = currentShape.getY1();
                 startY2 = currentShape.getY2();
             }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            DrawPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
 
         @Override
