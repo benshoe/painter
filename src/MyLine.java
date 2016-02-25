@@ -21,7 +21,7 @@ public class MyLine extends MyShape
    {
       Graphics2D graphics2D = (Graphics2D) g;
       graphics2D.setColor(getColor());
-      graphics2D.setStroke(getStroke());
+      graphics2D.setStroke(new BasicStroke(getStrokeWidth()));
 
       g.setColor(getColor());
       g.drawLine(getX1(), getY1(), getX2(), getY2());

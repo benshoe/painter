@@ -22,7 +22,7 @@ public class MyRect extends MyBoundedShape
    {
       Graphics2D graphics2D = (Graphics2D) g;
       graphics2D.setColor(getColor());
-      graphics2D.setStroke(getStroke());
+      graphics2D.setStroke(new BasicStroke(getStrokeWidth()));
 
       if (isFilled())
          graphics2D.fillRect(getUpperLeftX(), getUpperLeftY(),

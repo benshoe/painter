@@ -9,7 +9,13 @@ public abstract class MyShape implements java.io.Serializable
    private int x2; // x coordinate of second endpoint
    private int y2; // y coordinate of second endpoint
    private Color myColor; // color of this shape
-   private BasicStroke stroke = new BasicStroke(1);
+   private float strokeWidth; // line stroke width
+   // strokeWidth might be directly stored as BasicStroke...
+   // However, BasicStroke hasn't become serializable since 2000:
+   // http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4305099
+   // To keep MyShape serializable without extra efforts,
+   // we only store the float as member variable and call
+   // new BasicStroke(<floatValue>) whenever stroke needs to be set.
 
    // default constructor initializes values with 0
    public MyShape()
@@ -90,12 +96,12 @@ public abstract class MyShape implements java.io.Serializable
    // abstract draw method
    public abstract void draw(Graphics g);
 
-   protected BasicStroke getStroke() {
-      return stroke;
+   protected float getStrokeWidth() {
+      return strokeWidth;
    }
 
-   public void setStroke(BasicStroke stroke) {
-      this.stroke = stroke;
+   public void setStrokeWidth(float width) {
+      this.strokeWidth = width;
    }
 
    public void printCoordinates() {

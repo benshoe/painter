@@ -93,8 +93,8 @@ public class DrawPanel extends JPanel {
         this.lineThickness = lineThickness;
     }
 
-    private BasicStroke getStroke() {
-        return new BasicStroke(lineThickness.getThickness());
+    private float getStrokeWidth() {
+        return (float) lineThickness.getThickness();
     }
 
     // clears the last shape drawn
@@ -244,7 +244,7 @@ public class DrawPanel extends JPanel {
                     currentShape = new MyText(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
                     break;
             } // end switch
-            currentShape.setStroke(getStroke());
+            currentShape.setStrokeWidth(getStrokeWidth());
         } // end method mousePressed
 
         // fixes the current shape onto the panel

@@ -21,7 +21,7 @@ public class MyText extends MyShape
     {
         Graphics2D graphics2D = (Graphics2D) g;
         graphics2D.setColor(getColor());
-        graphics2D.setStroke(getStroke());
+        graphics2D.setStroke(new BasicStroke(getStrokeWidth()));
         // chooser...?
         g.setFont(new Font("Times", Font.PLAIN, 13));
         g.setColor(getColor());
