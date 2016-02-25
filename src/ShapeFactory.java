@@ -6,27 +6,29 @@ import java.awt.*;
  */
 public final class ShapeFactory {
 
-	public static MyShape getShape(int shapeType, int x1, int y1, int x2, int y2, Color currentColor, boolean filledShape) {
+	public static MyShape getShape(ShapeType shapeType, int x1, int y1, int x2, int y2, Color currentColor, boolean filledShape) {
 		MyShape currentShape = null;
 		switch (shapeType) {
-			case 0:
+			case LINE:
 				currentShape = new MyLine(x1, y1, x2, y2, currentColor);
 				break;
-			case 1:
+			case OVAL:
 				currentShape = new MyOval(x1, y1, x2, y2, currentColor, filledShape);
 				break;
-			case 2:
+			case CIRCLE:
 				currentShape = new MyCircle(x1, y1, x2, y2, currentColor, filledShape);
 				break;
-			case 3:
+			case RECTANGLE:
 				currentShape = new MyRect(x1, y1, x2, y2, currentColor, filledShape);
 				break;
-			case 4:
+			case SQUARE:
 				currentShape = new MySquare(x1, y1, x2, y2, currentColor, filledShape);
 				break;
-			case 5:
+			case ROUNDED_SQUARE:
 				currentShape = new MyRoundedRect(x1, y1, x2, y2, currentColor, filledShape);
 				break;
+			default:
+				throw new IllegalArgumentException("This shape is not known: " + shapeType);
 		} // end switch
 		return currentShape;
 	}

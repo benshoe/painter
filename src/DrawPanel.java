@@ -13,7 +13,7 @@ public class DrawPanel extends JPanel {
     ArrayList<MyShape> removedShapes = new ArrayList<>();
     private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
-    private int shapeType; // the type of shape to draw
+    private ShapeType shapeType; // the type of shape to draw
     private MyShape currentShape; // the current shape being drawn
     private Color currentColor; // the color of the shape
     private boolean filledShape; // whether this shape is filled
@@ -39,7 +39,7 @@ public class DrawPanel extends JPanel {
     // constructor
     public DrawPanel(JLabel status) {
 
-        setShapeType(0); // initially draw lines
+        setShapeType(ShapeType.LINE); // initially draw lines
         setDrawingColor(Color.BLACK); // start drawing with black
         setFilledShape(false);// not filled by default
         currentShape = null; // not drawing anything initially
@@ -77,10 +77,7 @@ public class DrawPanel extends JPanel {
     } // end method paintComponent
 
     // sets the type of shape to draw
-    public void setShapeType(int shapeType) {
-        if (shapeType < 0 || shapeType > 5)
-            shapeType = 0;
-
+    public void setShapeType(ShapeType shapeType) {
         this.shapeType = shapeType;
     } // end method setShapeType
 

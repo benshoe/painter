@@ -9,13 +9,11 @@ public class DrawFrame extends JFrame
    implements ItemListener, ActionListener
 {
    // Array of possible shapes
-   private String[] shapes = {"Line", "Oval", "Circle", "Rectangle", "Square", "Rounded Square"};
-
    private DrawPanel drawPanel; // panel that handles the drawing
 
    private JButton openFileButton; // button to open existing image
    private JButton saveFileButton; // button to save to file
-   private JComboBox<String> shapeChoices; // combo box for selecting shapes
+   private JComboBox<ShapeType> shapeChoices; // combo box for selecting shapes
    private JCheckBox filledCheckBox; // check box to toggle filled shapes
    private JComboBox<LineThickness> basicStrokeCombo;
 
@@ -86,7 +84,7 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
       });
 
       // create a combobox for choosing shapes
-      shapeChoices = new JComboBox<>(shapes);
+      shapeChoices = new JComboBox<>(ShapeType.values());
       shapeChoices.addItemListener(this);
       topPanel.add(shapeChoices);
 
@@ -132,7 +130,7 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
    public void itemStateChanged(ItemEvent e)
    {
       if (e.getSource() == shapeChoices) // choosing a shape
-         drawPanel.setShapeType(shapeChoices.getSelectedIndex());
+         drawPanel.setShapeType((ShapeType) shapeChoices.getSelectedItem());
       else if (e.getSource() == filledCheckBox) // filled/unfilled
          drawPanel.setFilledShape(filledCheckBox.isSelected());
    } // end method itemStateChanged
