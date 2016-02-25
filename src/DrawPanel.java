@@ -227,30 +227,7 @@ public class DrawPanel extends JPanel {
                 return;
 
             // create the appropriate shape based on shapeType
-            switch (shapeType) {
-                case 0:
-                    currentShape = new MyLine(e.getX(), e.getY(),
-                            e.getX(), e.getY(), currentColor);
-                    break;
-                case 1:
-                    currentShape = new MyOval(e.getX(), e.getY(),
-                            e.getX(), e.getY(), currentColor, filledShape);
-                    break;
-                case 2:
-                    currentShape = new MyCircle(e.getX(), e.getY(),
-                        e.getX(), e.getY(), currentColor, filledShape);
-                    break;
-                case 3:
-                    currentShape = new MyRect(e.getX(), e.getY(),
-                            e.getX(), e.getY(), currentColor, filledShape);
-                    break;
-                case 4:
-                    currentShape = new MySquare(e.getX(), e.getY(), e.getX(), e.getY(), currentColor, filledShape);
-                    break;
-                case 5:
-                    currentShape = new MyRoundedRect(e.getX(), e.getY(), e.getX(), e.getY(), currentColor, filledShape);
-                    break;
-            } // end switch
+            currentShape = ShapeFactory.getShape(shapeType, e.getX(), e.getY(), e.getX(), e.getY(), currentColor, filledShape);
             currentShape.setStrokeWidth(getStrokeWidth());
         } // end method mousePressed
 
