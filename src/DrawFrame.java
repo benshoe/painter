@@ -9,7 +9,7 @@ public class DrawFrame extends JFrame
    implements ItemListener, ActionListener
 {
    // Array of possible shapes
-   private String[] shapes = {"Line", "Oval", "Rectangle", "Text"};
+   private String[] shapes = {"Line", "Oval", "Circle", "Rectangle", "Square", "Rounded Square"};
 
    private DrawPanel drawPanel; // panel that handles the drawing
 

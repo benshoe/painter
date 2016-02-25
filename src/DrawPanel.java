@@ -78,7 +78,7 @@ public class DrawPanel extends JPanel {
 
     // sets the type of shape to draw
     public void setShapeType(int shapeType) {
-        if (shapeType < 0 || shapeType > 3)
+        if (shapeType < 0 || shapeType > 5)
             shapeType = 0;
 
         this.shapeType = shapeType;
@@ -237,11 +237,18 @@ public class DrawPanel extends JPanel {
                             e.getX(), e.getY(), currentColor, filledShape);
                     break;
                 case 2:
+                    currentShape = new MyCircle(e.getX(), e.getY(),
+                        e.getX(), e.getY(), currentColor, filledShape);
+                    break;
+                case 3:
                     currentShape = new MyRect(e.getX(), e.getY(),
                             e.getX(), e.getY(), currentColor, filledShape);
                     break;
-                case 3:
-                    currentShape = new MyText(e.getX(), e.getY(), e.getX(), e.getY(), currentColor);
+                case 4:
+                    currentShape = new MySquare(e.getX(), e.getY(), e.getX(), e.getY(), currentColor, filledShape);
+                    break;
+                case 5:
+                    currentShape = new MyRoundedRect(e.getX(), e.getY(), e.getX(), e.getY(), currentColor, filledShape);
                     break;
             } // end switch
             currentShape.setStrokeWidth(getStrokeWidth());
