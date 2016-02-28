@@ -124,9 +124,17 @@ public class DrawPanel extends JPanel {
         filledShape = isFilled;
     } // end method setFilledShape
 
-    // open file chooser to open existing file
+    /**
+     * openFileDialog pops up a JFileChooser and reads user-selected file.
+     * <p>
+     * The chooser is built on Java Tutorials by Oracle, namely:
+     * https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+     * The ImageFilter() below ensures only .painter files are user-selectable;
+     * see ImageFilter.java and Utils.java.
+     * @return void
+     */
     public void openFileDialog() {
-        // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+
         final JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new ImageFilter());
         int returnVal = fc.showOpenDialog(this);
@@ -136,6 +144,7 @@ public class DrawPanel extends JPanel {
             file = fc.getSelectedFile();
             fileNameToOpen = file.getPath();
         } else {
+            // early exit if user selected cancel button
             return;
         }
 
@@ -146,33 +155,56 @@ public class DrawPanel extends JPanel {
             // Read object using ObjectInputStream
             ObjectInputStream obj_in = new ObjectInputStream(f_in);
 
-            // Read an object
-            // FIXME? This throws a compile-time warning, as input is unchecked.
-            // What about bad/wrong/corrupt files? Catch them somehow?
+            // Slurp file contents into member shapes and close input file
             shapes = (ArrayList<MyShape>) obj_in.readObject();
             obj_in.close();
             repaint();
-            System.out.println("Opened " + fileNameToOpen + ", shapeCount: " + shapes.size());
 
-            // ugly to have such a side-effect in here?
-            // if so, how to better change window/JFrame's title?
+            // update window title: show filename
             JFrame myWindow = (JFrame) SwingUtilities.getRoot(this);
             myWindow.setTitle("Painter - " + file.getName());
-        } catch (FileNotFoundException fne) {
-            System.out.println("Cannot: " + fne);
+            System.out.println("Opened " + fileNameToOpen + ", shapeCount: " + shapes.size());
         } catch (IOException ioe) {
-            System.out.println("Cannot2: " + ioe);
+            JOptionPane.showMessageDialog(null,
+                    "Error opening file: " + ioe.getMessage(),
+                    "File I/O Error!",  JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException cnfe) {
-            System.out.println("Cannot3: " + cnfe);
+            JOptionPane.showMessageDialog(null,
+                    "Error opening file: " + cnfe.getMessage(),
+                    "File Format Error!",  JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // I'll add a saveFileToDisk(String filePath) which includes
-    // the below try{} block... to make it available for a saveButton().
-    // (where saveButton will only be enabled if saved before)
+    /**
+     * saveToFile saves (ArrayList) shapes to file, using serialization
+     * <p>
+     * The output file will contain the shapes only, without any further
+     * meta information (like file format version or other "header infos").
+     *
+     * @return void
+     */
+    public void saveToFile(String filename) throws IOException {
+        // Write to disk with FileOutputStream
+        FileOutputStream f_out = new FileOutputStream(filename);
+        // UPDATE title bar with filename? Keep track of unsaved changes?
+        // Write object with ObjectOutputStream
+        ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+        // Write object out to disk
+        obj_out.writeObject(shapes);
+        obj_out.flush();
+        obj_out.close();
+    }
 
+    /**
+     * saveFileDialog pops up a FileChooser to let user save current image.
+     * <p>
+     * If the selected file exists, the user will be asked whether he wants
+     * to overwrite it. If saving was successful, window title will be
+     * set to now-current filename.
+     *
+     * @return void
+     */
     public void saveFileDialog() {
-        System.out.println("SAVE clicked");
 
         final JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new ImageFilter());
@@ -190,26 +222,40 @@ public class DrawPanel extends JPanel {
                 selectedFileBasename = selectedFileBasename + ".painter";
             }
 
+            File testOutfile = new File(selectedFileAbsolutPath);
+            if (testOutfile.exists()) {
+                Object[] options = {"Yes, Overwrite",
+                                    "No, abort saving"};
+                int userReply = JOptionPane.showOptionDialog(null,
+                    "Selected file already exists. Overwrite?",
+                    "File exists",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+
+                if (userReply == 1) {
+                    System.out.println("Saving aborted by user, outfile exists");
+                    // user said to not overwrite -- early exit!
+                    return;
+                }
+            }
+
             try {
-                // Write to disk with FileOutputStream
-                FileOutputStream f_out = new FileOutputStream(selectedFileAbsolutPath);
-                // UPDATE title bar with filename? Keep track of unsaved changes?
-                // Write object with ObjectOutputStream
-                ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
-                // Write object out to disk
-                obj_out.writeObject(shapes);
-                obj_out.flush();
-                obj_out.close();
+                saveToFile(selectedFileAbsolutPath);
                 m_fileBaseName = selectedFileBasename;
 
-                // ugly to have such a side-effect in here?
-                // if so, how to better change window/JFrame's title?
+                // append new / now-current filename to window title
                 JFrame myWindow = (JFrame) SwingUtilities.getRoot(this);
                 myWindow.setTitle("Painter - " + selectedFileBasename);
-                // might setDirectory(  fc.getSelectedFile().get_?_Directory()  )
+
                 System.out.println("Saved  " + selectedFileAbsolutPath + ", shapeCount: " + shapes.size());
             } catch (IOException ioe) {
-                System.out.println("Cannot2");
+                // given output file may not be writable...
+                JOptionPane.showMessageDialog(null,
+                    "Error saving file: " + ioe.getMessage(),
+                    "Error!",  JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -307,8 +353,10 @@ public class DrawPanel extends JPanel {
 
     private MyShape findShapeAt(int x, int y) {
         System.out.printf("(x, y) = (%d, %d)\n", x, y);
+        // tbd: we should ensure top-down order here when traversing objects?
         for (MyShape shape : shapes) {
-            if(x >= shape.getX1() && x <= shape.getX2() && y >= shape.getY1() && y <= shape.getY2()) {
+            //if(x >= shape.getX1() && x <= shape.getX2() && y >= shape.getY1() && y <= shape.getY2()) {
+            if (shape.tangents(x,y)) {
                 shape.printCoordinates();
                 return shape;
             }

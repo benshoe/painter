@@ -135,11 +135,9 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
 
 
       // create a combobox for choosing shapes
-       /*
       shapeChoices = new JComboBox<>(ShapeType.values());
       shapeChoices.addItemListener(this);
       topPanel.add(shapeChoices);
-      */
 
       // create a checkbox to determine whether the shape is filled
       filledCheckBox = new JCheckBox("Filled");

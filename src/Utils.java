@@ -1,6 +1,10 @@
-
-// PIRATE:
+//
+// The Painter application's Open/Save dialog builds
+// on approaches as explained in in Oracle's Java Tutorials.
+// This file, Utils.java, is based on:
 // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/Utils.java
+// It was adapted only to match our supported file extension,
+// namely .painter
 
 import java.io.File;
 import javax.swing.ImageIcon;

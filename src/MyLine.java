@@ -16,6 +16,49 @@ public class MyLine extends MyShape
       super(x1, y1, x2, y2, color);
    } // end MyLine constructor
 
+   /**
+   * tangents(x,y) reports true if x,y tangents MyLine(x1,y1,x2,y2)
+   * <p>
+   * Overrides MyShape.tangents() in order to provide a more precise
+   * "shape discovery" than when just using the line's bounding box.
+   *
+   * @param  int X coordinate of point to test
+   * @param  int Y coordinate of point to test
+   * @return boolean true, if the given point is on MyLine
+   */
+   @Override
+   public boolean tangents(int x, int y) {
+      // return false if given point is outside line's bounding box
+      if (  ( x < getX1() && x < getX2() ) ||
+            ( y < getY1() && y < getY2() ) ||
+            ( x > getX1() && x > getX2() ) ||
+            ( y > getY1() && y > getY2() )
+        ) {
+        return false;
+      }
+      // https://www.mathsisfun.com/algebra/line-equation-2points.html
+      int changeInY = (getY1()-getY2());
+      int chnageInX = (getX1()-getX2());
+      float slope = (float)changeInY / (float)chnageInX;
+      // point-slope formula: y - y1 = m(x - x1)
+      // https://www.mathsisfun.com/algebra/line-equation-point-slope.html
+      // left and right part of equation:
+      float left  = y - getY1();
+      float right = slope * (x - getX1());
+
+      // To have left==right, user must click exactly on points...
+      // thus we allow for slight deviation here.
+      // Might need additional tuning...
+      int maxDeviation = 10;
+      if (Math.abs(left-right) < maxDeviation) {
+        System.out.println("PointSlopeEquation match: " +
+        left + " = " + right + " => Deviation: "+Math.abs(left-right));
+        return true;
+      }
+      // default: no match / does not tangent
+      return false;
+   }
+
    // draw line in specified color
    public void draw(Graphics g)
    {

@@ -1,9 +1,11 @@
-
-/// THIS IS A PIRATED COPY FROM
-/// https://docs.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/ImageFilter.java
+//
+// The Painter application's Open/Save dialog builds
+// on approaches as explained in in Oracle's Java Tutorials.
+// This file, ImageFilter.java, is based on:
+// https://docs.oracle.com/javase/tutorial/uiswing/examples/components/FileChooserDemo2Project/src/components/ImageFilter.java
+// Only getDescription() below was adjusted to our use case.
 
 import java.io.File;
-import javax.swing.*;
 import javax.swing.filechooser.*;
 
 /* ImageFilter.java is used by FileChooserDemo2.java. */
