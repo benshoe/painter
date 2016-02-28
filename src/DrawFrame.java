@@ -6,27 +6,27 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class DrawFrame extends JFrame
-   implements ItemListener, ActionListener
+   implements ItemListener
 {
-   // Array of possible shapes
-   private DrawPanel drawPanel; // panel that handles the drawing
+    // Array of possible shapes
+    private DrawPanel drawPanel; // panel that handles the drawing
 
-   private JButton openFileButton; // button to open existing image
-   private JButton saveFileButton; // button to save to file
-   private JComboBox<ShapeType> shapeChoices; // combo box for selecting shapes
-   private JCheckBox filledCheckBox; // check box to toggle filled shapes
-   private JComboBox<LineThickness> basicStrokeCombo;
+    private JButton openFileButton; // button to open existing image
+    private JButton saveFileButton; // button to save to file
+    private JComboBox<ShapeType> shapeChoices; // combo box for selecting shapes
+    private JCheckBox filledCheckBox; // check box to toggle filled shapes
+    private JComboBox<LineThickness> basicStrokeCombo;
 
-   // constructor
+    // constructor
    public DrawFrame()
    {
-      super("Painter - New file.painter");
+       super("Painter - New file.painter");
 
-      setLookAndFeel();
+       setLookAndFeel();
 
-      // create a panel to store the components at the top of the frame
-      JPanel topPanel = new JPanel();
-      ComponentPanel componentPanel = new ComponentPanel();
+       // create a panel to store the components at the top of the frame
+       JPanel topPanel = new JPanel();
+       ComponentPanel componentPanel = new ComponentPanel();
       /*
       The anonymous inner class is an object that implements the ActionListener
 interface. The object’s actionPerformed() method is overridden to set the frame’s
@@ -53,53 +53,98 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
                drawPanel.clearLastShape();
            }
        });
-      componentPanel.setOnClearClicked(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
+       componentPanel.setOnClearClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
             drawPanel.clearDrawing();
          }
-      });
-      componentPanel.setOnRedoClicked(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
+       });
+       componentPanel.setOnRedoClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
             drawPanel.redoLastRemovedShape();
          }
-      });
-      componentPanel.setOnColorClicked(new MouseAdapter() {
-         @Override
-         public void mouseClicked(MouseEvent e) {
+       });
+       componentPanel.setOnColorClicked(new MouseAdapter() {
+           @Override
+           public void mouseClicked(MouseEvent e) {
             drawPanel.setDrawingColor((Color) e.getSource());
          }
-      });
+       });
 
-      LineThickness[] lineThicknesses = LineThickness.values();
-      basicStrokeCombo = new JComboBox<>(lineThicknesses);
-      topPanel.add(basicStrokeCombo);
-      basicStrokeCombo.addActionListener(new ActionListener() {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-            final Object selectedItem = basicStrokeCombo.getSelectedItem();
-            drawPanel.setLineThickness((LineThickness) selectedItem);
-         }
-      });
+       //Save and open buttons
+       Icon openIcon = new ImageIcon(getClass().getResource(Images.OPEN));
+       openFileButton = new JButton(openIcon);
+       openFileButton.addActionListener(e -> drawPanel.openFileDialog());
+       openFileButton.setToolTipText("Open File");
+       openFileButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(openFileButton);
+
+       Icon saveIcon = new ImageIcon(getClass().getResource(Images.SAVE));
+       saveFileButton = new JButton(saveIcon);
+       saveFileButton.addActionListener(e -> drawPanel.saveFileDialog());
+       saveFileButton.setToolTipText("Save File");
+       saveFileButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(saveFileButton);
+
+       //Draw shape buttons
+       Icon lineIcon = new ImageIcon(getClass().getResource(Images.LINE));
+       JButton drawLineButton = new JButton(lineIcon);
+       drawLineButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.LINE));
+       drawLineButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawLineButton);
+
+       Icon squareIcon = new ImageIcon(getClass().getResource(Images.SQUARE));
+       JButton drawSquareButton = new JButton(squareIcon);
+       drawSquareButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.SQUARE));
+       drawSquareButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawSquareButton);
+
+       Icon rectIcon = new ImageIcon(getClass().getResource(Images.RECTANGLE));
+       JButton drawRectButton = new JButton(rectIcon);
+       drawRectButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.RECTANGLE));
+       drawRectButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawRectButton);
+
+       Icon circleIcon = new ImageIcon(getClass().getResource(Images.CIRCLE));
+       JButton drawCirleButton = new JButton(circleIcon);
+       drawCirleButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.CIRCLE));
+       drawCirleButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawCirleButton);
+
+       Icon ovalIcon = new ImageIcon(getClass().getResource(Images.OVAL));
+       JButton drawOvalButton = new JButton(ovalIcon);
+       drawOvalButton.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawOvalButton);
+
+       Icon roundedRectIcon = new ImageIcon(getClass().getResource(Images.ROUNDED_RECT));
+       JButton drawRoundedSquare = new JButton(roundedRectIcon);
+       drawRoundedSquare.addActionListener(e -> drawPanel.setShapeType(ShapeType.ROUNDED_SQUARE));
+       drawRoundedSquare.setPreferredSize(new Dimension(40, 40));
+       topPanel.add(drawRoundedSquare);
+
+       //Line thinkness Button
+       LineThickness[] lineThicknesses = LineThickness.values();
+       basicStrokeCombo = new JComboBox<>(lineThicknesses);
+       topPanel.add(basicStrokeCombo);
+       basicStrokeCombo.addActionListener(e -> {
+          final Object selectedItem = basicStrokeCombo.getSelectedItem();
+          drawPanel.setLineThickness((LineThickness) selectedItem);
+       });
+
+
 
       // create a combobox for choosing shapes
+       /*
       shapeChoices = new JComboBox<>(ShapeType.values());
       shapeChoices.addItemListener(this);
       topPanel.add(shapeChoices);
+      */
 
       // create a checkbox to determine whether the shape is filled
       filledCheckBox = new JCheckBox("Filled");
       filledCheckBox.addItemListener(this);
       topPanel.add(filledCheckBox);
-
-      openFileButton = new JButton("Open");
-      openFileButton.addActionListener(this);
-      topPanel.add(openFileButton);
-
-      saveFileButton = new JButton("Save");
-      saveFileButton.addActionListener(this);
-      topPanel.add(saveFileButton);
 
       // add the top panel to the frame
       add(topPanel, BorderLayout.NORTH);
@@ -135,14 +180,6 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
          drawPanel.setFilledShape(filledCheckBox.isSelected());
    } // end method itemStateChanged
 
-   // handle button clicks
-   public void actionPerformed(ActionEvent e)
-   {
-      if (e.getSource() == openFileButton)
-        drawPanel.openFileDialog();
-      else if (e.getSource() == saveFileButton)
-        drawPanel.saveFileDialog();
-   } // end method actionPerformed
 } // end class DrawFrame
 
 

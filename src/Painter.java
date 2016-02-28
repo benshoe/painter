@@ -8,7 +8,7 @@ public class Painter
    {
       DrawFrame application = new DrawFrame();
       application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      application.setSize(500, 400);
+      application.setSize(800, 400);
       application.setVisible(true);
    } // end main
 } // end class Painter

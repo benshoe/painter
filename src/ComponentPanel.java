@@ -17,9 +17,10 @@ public final class ComponentPanel extends JPanel {
 	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        Icon drawModeIcon = new ImageIcon(getClass().getResource(Images.OVAL));
-        JLabel drawModeLable = new JLabel(drawModeIcon);
-        drawModeLable.setToolTipText("Draw mode");
+        Icon drawModeIcon = new ImageIcon(getClass().getResource(Images.DRAW));
+        JButton drawModeLable = new JButton(drawModeIcon);
+        drawModeLable.setPreferredSize(new Dimension(40, 40));
+        drawModeLable.setToolTipText("Draw Shape");
         drawModeLable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -28,9 +29,10 @@ public final class ComponentPanel extends JPanel {
         });
         add(drawModeLable);
 
-        Icon selectModeIcon = new ImageIcon(getClass().getResource(Images.START));
-        JLabel selectModeLable = new JLabel(selectModeIcon);
-        selectModeLable.setToolTipText("Select mode");
+        Icon selectModeIcon = new ImageIcon(getClass().getResource(Images.SELECT));
+        JButton selectModeLable = new JButton(selectModeIcon);
+        selectModeLable.setPreferredSize(new Dimension(40, 40));
+        selectModeLable.setToolTipText("Select Shape");
         selectModeLable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -40,7 +42,8 @@ public final class ComponentPanel extends JPanel {
         add(selectModeLable);
 
         Icon undoIcon = new ImageIcon(getClass().getResource(Images.UNDO));
-        JLabel undoLabel = new JLabel(undoIcon);
+        JButton undoLabel = new JButton(undoIcon);
+        undoLabel.setPreferredSize(new Dimension(40, 40));
         undoLabel.setToolTipText("Undo");
         undoLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -51,7 +54,8 @@ public final class ComponentPanel extends JPanel {
         add(undoLabel);
 
         Icon redoIcon = new ImageIcon(getClass().getResource(Images.REDO));
-        JLabel redoLabel = new JLabel(redoIcon);
+        JButton redoLabel = new JButton(redoIcon);
+        redoLabel.setPreferredSize(new Dimension(40, 40));
         redoLabel.setToolTipText("Redo");
         redoLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -63,7 +67,8 @@ public final class ComponentPanel extends JPanel {
 
         // create a label for clearing all drawings
         Icon clearIcon = new ImageIcon(getClass().getResource(Images.TRASH));
-        JLabel clearLabel = new JLabel(clearIcon);
+        JButton clearLabel = new JButton(clearIcon);
+        clearLabel.setPreferredSize(new Dimension(40, 40));
         clearLabel.setToolTipText("Clear all images");
         clearLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,8 +78,9 @@ public final class ComponentPanel extends JPanel {
         });
         add(clearLabel);
 
-        Icon colorIcon = new ImageIcon(getClass().getResource(Images.TRASH));
-        JLabel colorLabel = new JLabel(colorIcon);
+        Icon colorIcon = new ImageIcon(getClass().getResource(Images.COLOUR_PICKER));
+        JButton colorLabel = new JButton(colorIcon);
+        colorLabel.setPreferredSize(new Dimension(40, 40));
         colorLabel.setToolTipText("Choose a color");
         colorLabel.addMouseListener(new MouseAdapter() {
             @Override
