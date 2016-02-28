@@ -104,11 +104,10 @@ public abstract class MyShape implements java.io.Serializable
       this.strokeWidth = width;
    }
 
-   // isSelected / isClicked / isTouched() ? better name?
    // subclasses should override this to provide more precise approach
    // than this one here, which uses the objects bounding box instead
    // of the shape's real wireframe
-   public boolean tangents(int x, int y) {
+   public boolean isTouched(int x, int y) {
       if(x >= this.getX1() && x <= this.getX2() && y >= this.getY1() && y <= this.getY2()) {
          return true;
       }

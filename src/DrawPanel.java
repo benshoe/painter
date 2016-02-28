@@ -355,8 +355,7 @@ public class DrawPanel extends JPanel {
         System.out.printf("(x, y) = (%d, %d)\n", x, y);
         // tbd: we should ensure top-down order here when traversing objects?
         for (MyShape shape : shapes) {
-            //if(x >= shape.getX1() && x <= shape.getX2() && y >= shape.getY1() && y <= shape.getY2()) {
-            if (shape.tangents(x,y)) {
+            if (shape.isTouched(x,y)) {
                 shape.printCoordinates();
                 return shape;
             }

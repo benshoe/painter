@@ -17,9 +17,9 @@ public class MyLine extends MyShape
    } // end MyLine constructor
 
    /**
-   * tangents(x,y) reports true if x,y tangents MyLine(x1,y1,x2,y2)
+   * isTouched(x,y) reports true if x,y isTouched MyLine(x1,y1,x2,y2)
    * <p>
-   * Overrides MyShape.tangents() in order to provide a more precise
+   * Overrides MyShape.isTouched() in order to provide a more precise
    * "shape discovery" than when just using the line's bounding box.
    *
    * @param  int X coordinate of point to test
@@ -27,7 +27,7 @@ public class MyLine extends MyShape
    * @return boolean true, if the given point is on MyLine
    */
    @Override
-   public boolean tangents(int x, int y) {
+   public boolean isTouched(int x, int y) {
       // return false if given point is outside line's bounding box
       if (  ( x < getX1() && x < getX2() ) ||
             ( y < getY1() && y < getY2() ) ||

@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -7,114 +6,64 @@ import java.awt.event.*;
  */
 public final class ComponentPanel extends JPanel {
 
-    private MouseListener onClearClicked;
-    private MouseListener onUndoClicked;
-    private MouseListener onRedoClicked;
-    private MouseListener onColorClicked;
-    private MouseListener onDrawModeClicked;
-    private MouseListener onSelectModeClicked;
+    private ActionListener onClearClicked;
+    private ActionListener onUndoClicked;
+    private ActionListener onRedoClicked;
+    private ActionListener onColorClicked;
+    private ActionListener onDrawModeClicked;
+    private ActionListener onSelectModeClicked;
 
 	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         Icon drawModeIcon = new ImageIcon(getClass().getResource(Images.DRAW));
-        JButton drawModeLable = new JButton(drawModeIcon);
-        drawModeLable.setPreferredSize(new Dimension(40, 40));
-        drawModeLable.setToolTipText("Draw Shape");
-        drawModeLable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onDrawModeClicked.mouseClicked(e);
-            }
-        });
-        add(drawModeLable);
+        JButton drawModeButton = PainterPanel.addButtonToPanel(this, drawModeIcon, "Draw shape");
+        drawModeButton.addActionListener(e -> onDrawModeClicked.actionPerformed(e));
 
         Icon selectModeIcon = new ImageIcon(getClass().getResource(Images.SELECT));
-        JButton selectModeLable = new JButton(selectModeIcon);
-        selectModeLable.setPreferredSize(new Dimension(40, 40));
-        selectModeLable.setToolTipText("Select Shape");
-        selectModeLable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onSelectModeClicked.mouseClicked(e);
-            }
-        });
-        add(selectModeLable);
+        JButton selectModeButton = PainterPanel.addButtonToPanel(this, selectModeIcon, "Select shape");
+        selectModeButton.addActionListener(e -> onSelectModeClicked.actionPerformed(e));
 
         Icon undoIcon = new ImageIcon(getClass().getResource(Images.UNDO));
-        JButton undoLabel = new JButton(undoIcon);
-        undoLabel.setPreferredSize(new Dimension(40, 40));
-        undoLabel.setToolTipText("Undo");
-        undoLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onUndoClicked.mouseClicked(e);
-            }
-        });
-        add(undoLabel);
+        JButton undoButton = PainterPanel.addButtonToPanel(this, undoIcon, "Undo");
+        undoButton.addActionListener(e -> onUndoClicked.actionPerformed(e));
 
         Icon redoIcon = new ImageIcon(getClass().getResource(Images.REDO));
-        JButton redoLabel = new JButton(redoIcon);
-        redoLabel.setPreferredSize(new Dimension(40, 40));
-        redoLabel.setToolTipText("Redo");
-        redoLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onRedoClicked.mouseClicked(e);
-            }
-        });
-        add(redoLabel);
+        JButton redoButton = PainterPanel.addButtonToPanel(this, redoIcon, "Redo");
+        redoButton.addActionListener(e -> onRedoClicked.actionPerformed(e));
 
-        // create a label for clearing all drawings
+        // create a button for clearing all drawings
         Icon clearIcon = new ImageIcon(getClass().getResource(Images.TRASH));
-        JButton clearLabel = new JButton(clearIcon);
-        clearLabel.setPreferredSize(new Dimension(40, 40));
-        clearLabel.setToolTipText("Clear all images");
-        clearLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                onClearClicked.mouseClicked(e);
-            }
-        });
-        add(clearLabel);
+        JButton clearButton = PainterPanel.addButtonToPanel(this, clearIcon, "Clear all images");
+        clearButton.addActionListener(e -> onClearClicked.actionPerformed(e));
 
         Icon colorIcon = new ImageIcon(getClass().getResource(Images.COLOUR_PICKER));
-        JButton colorLabel = new JButton(colorIcon);
-        colorLabel.setPreferredSize(new Dimension(40, 40));
-        colorLabel.setToolTipText("Choose a color");
-        colorLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
-                e.setSource(newColor);
-                onColorClicked.mouseClicked(e);
-            }
-        });
-        add(colorLabel);
+        JButton colorbutton = PainterPanel.addButtonToPanel(this, colorIcon, "Draw shape");
+        colorbutton.addActionListener(e -> onColorClicked.actionPerformed(e));
 
 	}
 
-    void setOnSelectModeClicked(MouseListener onSelectModeClicked) {
+    void setOnSelectModeClicked(ActionListener onSelectModeClicked) {
         this.onSelectModeClicked = onSelectModeClicked;
     }
 
-    void setOnDrawModeClicked(MouseListener onDrawModeClicked) {
+    void setOnDrawModeClicked(ActionListener onDrawModeClicked) {
         this.onDrawModeClicked = onDrawModeClicked;
     }
 
-    void setOnUndoClicked(MouseListener onUndoClicked) {
+    void setOnUndoClicked(ActionListener onUndoClicked) {
         this.onUndoClicked = onUndoClicked;
     }
 
-    void setOnRedoClicked(MouseListener onRedoClicked) {
+    void setOnRedoClicked(ActionListener onRedoClicked) {
         this.onRedoClicked = onRedoClicked;
     }
 
-    void setOnClearClicked(MouseListener onClearClicked) {
+    void setOnClearClicked(ActionListener onClearClicked) {
         this.onClearClicked = onClearClicked;
     }
 
-    void setOnColorClicked(MouseListener onColorClicked) {
+    void setOnColorClicked(ActionListener onColorClicked) {
         this.onColorClicked = onColorClicked;
     }
 }

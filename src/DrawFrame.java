@@ -3,7 +3,6 @@
 // Allows the user to choose the shape and color.
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class DrawFrame extends JFrame {
     // Array of possible shapes
@@ -27,94 +26,46 @@ it’s simpler than using one listener for multiple interface components.
 Inner classes look more complicated than separate classes, but they can simplify and
 shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Java 2 in 21 days, Sams.]
        */
-       componentPanel.setOnDrawModeClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-               drawPanel.setDrawmode();
-           }
-       });
-       componentPanel.setOnSelectModeClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-               drawPanel.setSelectmode();
-           }
-       });
-       componentPanel.setOnUndoClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-               drawPanel.clearLastShape();
-           }
-       });
-       componentPanel.setOnClearClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-            drawPanel.clearDrawing();
-         }
-       });
-       componentPanel.setOnRedoClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-            drawPanel.redoLastRemovedShape();
-         }
-       });
-       componentPanel.setOnColorClicked(new MouseAdapter() {
-           @Override
-           public void mouseClicked(MouseEvent e) {
-            drawPanel.setDrawingColor((Color) e.getSource());
-         }
-       });
+       componentPanel.setOnDrawModeClicked(e -> drawPanel.setDrawmode());
+       componentPanel.setOnSelectModeClicked(e -> drawPanel.setSelectmode());
+       componentPanel.setOnUndoClicked(e -> drawPanel.clearLastShape());
+       componentPanel.setOnClearClicked(e -> drawPanel.clearDrawing());
+       componentPanel.setOnRedoClicked(e -> drawPanel.redoLastRemovedShape());
+       componentPanel.setOnColorClicked(e -> drawPanel.setDrawingColor((Color) e.getSource()));
 
        //Save and open buttons
        Icon openIcon = new ImageIcon(getClass().getResource(Images.OPEN));
-       JButton openFileButton = new JButton(openIcon);
+       JButton openFileButton = PainterPanel.addButtonToPanel(topPanel, openIcon, "Open File");
        openFileButton.addActionListener(e -> drawPanel.openFileDialog());
-       openFileButton.setToolTipText("Open File");
-       openFileButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(openFileButton);
 
        Icon saveIcon = new ImageIcon(getClass().getResource(Images.SAVE));
-       JButton saveFileButton = new JButton(saveIcon);
+       JButton saveFileButton = PainterPanel.addButtonToPanel(topPanel, saveIcon, "Save File");
        saveFileButton.addActionListener(e -> drawPanel.saveFileDialog());
-       saveFileButton.setToolTipText("Save File");
-       saveFileButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(saveFileButton);
 
        //Draw shape buttons
        Icon lineIcon = new ImageIcon(getClass().getResource(Images.LINE));
-       JButton drawLineButton = new JButton(lineIcon);
+       JButton drawLineButton = PainterPanel.addButtonToPanel(topPanel, lineIcon, "Line");
        drawLineButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.LINE));
-       drawLineButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawLineButton);
 
        Icon squareIcon = new ImageIcon(getClass().getResource(Images.SQUARE));
-       JButton drawSquareButton = new JButton(squareIcon);
+       JButton drawSquareButton = PainterPanel.addButtonToPanel(topPanel, squareIcon, "Square");
        drawSquareButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.SQUARE));
-       drawSquareButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawSquareButton);
 
        Icon rectIcon = new ImageIcon(getClass().getResource(Images.RECTANGLE));
-       JButton drawRectButton = new JButton(rectIcon);
+       JButton drawRectButton = PainterPanel.addButtonToPanel(topPanel, rectIcon, "Rectangle");
        drawRectButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.RECTANGLE));
-       drawRectButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawRectButton);
 
        Icon circleIcon = new ImageIcon(getClass().getResource(Images.CIRCLE));
-       JButton drawCirleButton = new JButton(circleIcon);
+       JButton drawCirleButton = PainterPanel.addButtonToPanel(topPanel, circleIcon, "Circle");
        drawCirleButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.CIRCLE));
-       drawCirleButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawCirleButton);
 
        Icon ovalIcon = new ImageIcon(getClass().getResource(Images.OVAL));
-       JButton drawOvalButton = new JButton(ovalIcon);
+       JButton drawOvalButton = PainterPanel.addButtonToPanel(topPanel, ovalIcon, "Oval");
       drawOvalButton.addActionListener(e1 -> drawPanel.setShapeType(ShapeType.OVAL));
-       drawOvalButton.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawOvalButton);
 
        Icon roundedRectIcon = new ImageIcon(getClass().getResource(Images.ROUNDED_RECTANGLE));
-       JButton drawRoundedSquare = new JButton(roundedRectIcon);
+       JButton drawRoundedSquare = PainterPanel.addButtonToPanel(topPanel, roundedRectIcon, "Rounded rectangle");
        drawRoundedSquare.addActionListener(e -> drawPanel.setShapeType(ShapeType.ROUNDED_RECTANGLE));
-       drawRoundedSquare.setPreferredSize(new Dimension(40, 40));
-       topPanel.add(drawRoundedSquare);
 
        //Line thinkness Button
        LineThickness[] lineThicknesses = LineThickness.values();
@@ -132,6 +83,7 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
 
       // add the top panel to the frame
       add(topPanel, BorderLayout.NORTH);
+       // add the componentPanel to the frame
       add(componentPanel, BorderLayout.WEST);
 
       // create a label for the status bar
@@ -146,7 +98,7 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
       add(drawPanel); // add the drawing area to the center
    } // end DrawFrame constructor
 
-   private void setLookAndFeel() {
+    private void setLookAndFeel() {
       try {
          UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
          SwingUtilities.updateComponentTreeUI(this);
