@@ -27,6 +27,8 @@ public class DrawPanel extends JPanel {
         addMouseMotionListener(mouseDrawHandler);
         removeMouseListener(mouseSelectHandler);
         removeMouseMotionListener(mouseSelectHandler);
+        setFrameCursor(Cursor.CROSSHAIR_CURSOR);
+        currentShape = null;
     }
 
     public void setSelectmode() {
@@ -34,6 +36,8 @@ public class DrawPanel extends JPanel {
         addMouseMotionListener(mouseSelectHandler);
         removeMouseListener(mouseDrawHandler);
         removeMouseMotionListener(mouseDrawHandler);
+        setFrameCursor(Cursor.DEFAULT_CURSOR);
+        currentShape = null;
     }
 
     // constructor
@@ -49,8 +53,7 @@ public class DrawPanel extends JPanel {
         // add the mouse listeners
         mouseDrawHandler = new MouseDrawHandler();
         mouseSelectHandler = new MouseSelectHandler();
-        addMouseListener(mouseDrawHandler);
-        addMouseMotionListener(mouseDrawHandler);
+        setDrawmode();
 
         // set the status label for displaying mouse coordinates
         statusLabel = status;
@@ -304,8 +307,7 @@ public class DrawPanel extends JPanel {
 
         // updates the status bar to show the current mouse coordinates
         public void mouseMoved(MouseEvent e) {
-            statusLabel.setText(
-                    String.format("(%d,%d)", e.getX(), e.getY()));
+            statusLabel.setText(String.format("(%d,%d)", e.getX(), e.getY()));
         } // end method mouseMoved
     } // end class MouseHandler
 
@@ -321,11 +323,22 @@ public class DrawPanel extends JPanel {
         private int mouseY;
 
         @Override
+        public void mouseMoved(MouseEvent e) {
+            statusLabel.setText(String.format("(%d,%d)", e.getX(), e.getY()));
+            for(MyShape shape : shapes) {
+                if (shape.isTouched(e.getX(), e.getY())) {
+                    currentShape = shape;
+                    setFrameCursor(Cursor.HAND_CURSOR);
+                    return;
+                }
+            }
+            setFrameCursor(Cursor.DEFAULT_CURSOR);
+        }
+
+        @Override
         public void mousePressed(MouseEvent e) {
-            DrawPanel.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
             mouseX = e.getX();
             mouseY = e.getY();
-            currentShape = findShapeAt(mouseX, mouseY);
             if(currentShape != null) {
                 startX1 = currentShape.getX1();
                 startX2 = currentShape.getX2();
@@ -336,7 +349,7 @@ public class DrawPanel extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            DrawPanel.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            setFrameCursor(Cursor.DEFAULT_CURSOR);
         }
 
         @Override
@@ -355,12 +368,17 @@ public class DrawPanel extends JPanel {
         System.out.printf("(x, y) = (%d, %d)\n", x, y);
         // tbd: we should ensure top-down order here when traversing objects?
         for (MyShape shape : shapes) {
+            shape.printCoordinates();
             if (shape.isTouched(x,y)) {
-                shape.printCoordinates();
                 return shape;
             }
         }
         return null;
+    }
+
+    private void setFrameCursor(int cursorType) {
+        Cursor cursor = new Cursor(cursorType);
+        DrawPanel.this.setCursor(cursor);
     }
 
 } // end class DrawPanel
