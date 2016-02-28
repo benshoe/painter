@@ -3,7 +3,7 @@
  * @since 2/25/16.
  */
 public enum ShapeType {
-	LINE("Line"), OVAL("Oval"), CIRCLE("Circle"), RECTANGLE("Rectangle"), SQUARE("Square"), ROUNDED_SQUARE("Rounded Square");
+	LINE("Line"), OVAL("Oval"), CIRCLE("Circle"), RECTANGLE("Rectangle"), SQUARE("Square"), ROUNDED_RECTANGLE("Rounded Rectangle");
 
 	private final String shapeName;
 

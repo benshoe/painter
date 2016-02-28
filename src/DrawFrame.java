@@ -5,17 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DrawFrame extends JFrame
-   implements ItemListener
-{
+public class DrawFrame extends JFrame {
     // Array of possible shapes
     private DrawPanel drawPanel; // panel that handles the drawing
-
-    private JButton openFileButton; // button to open existing image
-    private JButton saveFileButton; // button to save to file
-    private JComboBox<ShapeType> shapeChoices; // combo box for selecting shapes
-    private JCheckBox filledCheckBox; // check box to toggle filled shapes
-    private JComboBox<LineThickness> basicStrokeCombo;
 
     // constructor
    public DrawFrame()
@@ -74,14 +66,14 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
 
        //Save and open buttons
        Icon openIcon = new ImageIcon(getClass().getResource(Images.OPEN));
-       openFileButton = new JButton(openIcon);
+       JButton openFileButton = new JButton(openIcon);
        openFileButton.addActionListener(e -> drawPanel.openFileDialog());
        openFileButton.setToolTipText("Open File");
        openFileButton.setPreferredSize(new Dimension(40, 40));
        topPanel.add(openFileButton);
 
        Icon saveIcon = new ImageIcon(getClass().getResource(Images.SAVE));
-       saveFileButton = new JButton(saveIcon);
+       JButton saveFileButton = new JButton(saveIcon);
        saveFileButton.addActionListener(e -> drawPanel.saveFileDialog());
        saveFileButton.setToolTipText("Save File");
        saveFileButton.setPreferredSize(new Dimension(40, 40));
@@ -114,34 +106,28 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
 
        Icon ovalIcon = new ImageIcon(getClass().getResource(Images.OVAL));
        JButton drawOvalButton = new JButton(ovalIcon);
+      drawOvalButton.addActionListener(e1 -> drawPanel.setShapeType(ShapeType.OVAL));
        drawOvalButton.setPreferredSize(new Dimension(40, 40));
        topPanel.add(drawOvalButton);
 
-       Icon roundedRectIcon = new ImageIcon(getClass().getResource(Images.ROUNDED_RECT));
+       Icon roundedRectIcon = new ImageIcon(getClass().getResource(Images.ROUNDED_RECTANGLE));
        JButton drawRoundedSquare = new JButton(roundedRectIcon);
-       drawRoundedSquare.addActionListener(e -> drawPanel.setShapeType(ShapeType.ROUNDED_SQUARE));
+       drawRoundedSquare.addActionListener(e -> drawPanel.setShapeType(ShapeType.ROUNDED_RECTANGLE));
        drawRoundedSquare.setPreferredSize(new Dimension(40, 40));
        topPanel.add(drawRoundedSquare);
 
        //Line thinkness Button
        LineThickness[] lineThicknesses = LineThickness.values();
-       basicStrokeCombo = new JComboBox<>(lineThicknesses);
+       JComboBox<LineThickness> basicStrokeCombo = new JComboBox<>(lineThicknesses);
        topPanel.add(basicStrokeCombo);
        basicStrokeCombo.addActionListener(e -> {
           final Object selectedItem = basicStrokeCombo.getSelectedItem();
           drawPanel.setLineThickness((LineThickness) selectedItem);
        });
 
-
-
-      // create a combobox for choosing shapes
-      shapeChoices = new JComboBox<>(ShapeType.values());
-      shapeChoices.addItemListener(this);
-      topPanel.add(shapeChoices);
-
       // create a checkbox to determine whether the shape is filled
-      filledCheckBox = new JCheckBox("Filled");
-      filledCheckBox.addItemListener(this);
+      JCheckBox filledCheckBox = new JCheckBox("Filled");
+      filledCheckBox.addItemListener(e -> drawPanel.setFilledShape(filledCheckBox.isSelected()));
       topPanel.add(filledCheckBox);
 
       // add the top panel to the frame
@@ -168,15 +154,6 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
          System.out.println("Could not load look and feel " + e);
       }
    }
-
-   // handle selections made to a combobox or checkbox
-   public void itemStateChanged(ItemEvent e)
-   {
-      if (e.getSource() == shapeChoices) // choosing a shape
-         drawPanel.setShapeType((ShapeType) shapeChoices.getSelectedItem());
-      else if (e.getSource() == filledCheckBox) // filled/unfilled
-         drawPanel.setFilledShape(filledCheckBox.isSelected());
-   } // end method itemStateChanged
 
 } // end class DrawFrame
 

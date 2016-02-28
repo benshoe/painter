@@ -24,7 +24,7 @@ public final class ShapeFactory {
 			case SQUARE:
 				currentShape = new MySquare(x1, y1, x2, y2, currentColor, filledShape);
 				break;
-			case ROUNDED_SQUARE:
+			case ROUNDED_RECTANGLE:
 				currentShape = new MyRoundedRect(x1, y1, x2, y2, currentColor, filledShape);
 				break;
 			default:
