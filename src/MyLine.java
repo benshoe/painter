@@ -50,13 +50,7 @@ public class MyLine extends MyShape
       // thus we allow for slight deviation here.
       // Might need additional tuning...
       int maxDeviation = 10;
-      if (Math.abs(left-right) < maxDeviation) {
-        System.out.println("PointSlopeEquation match: " +
-        left + " = " + right + " => Deviation: "+Math.abs(left-right));
-        return true;
-      }
-      // default: no match / does not tangent
-      return false;
+      return Math.abs(left-right) < maxDeviation;
    }
 
    // draw line in specified color

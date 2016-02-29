@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -35,7 +36,11 @@ public final class ComponentPanel extends JPanel {
         clearButton.addActionListener(e -> onClearClicked.actionPerformed(e));
 
         JButton colorbutton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.COLOUR_PICKER), "Draw shape");
-        colorbutton.addActionListener(e -> onColorClicked.actionPerformed(e));
+        colorbutton.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
+            e.setSource(newColor);
+            onColorClicked.actionPerformed(e);
+        });
 
 	}
 

@@ -32,7 +32,9 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
        componentPanel.setOnUndoClicked(e -> drawPanel.clearLastShape());
        componentPanel.setOnClearClicked(e -> drawPanel.clearDrawing());
        componentPanel.setOnRedoClicked(e -> drawPanel.redoLastRemovedShape());
-       componentPanel.setOnColorClicked(e -> drawPanel.setDrawingColor((Color) e.getSource()));
+       componentPanel.setOnColorClicked(e -> {
+           drawPanel.setDrawingColor((Color) e.getSource());
+       });
 
        //Save and open buttons
        JButton openFileButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.OPEN), "Open File");
