@@ -350,6 +350,7 @@ public class DrawPanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             setFrameCursor(Cursor.DEFAULT_CURSOR);
+            currentShape = null;
         }
 
         @Override
@@ -362,18 +363,6 @@ public class DrawPanel extends JPanel {
                 repaint();
             }
         }
-    }
-
-    private MyShape findShapeAt(int x, int y) {
-        System.out.printf("(x, y) = (%d, %d)\n", x, y);
-        // tbd: we should ensure top-down order here when traversing objects?
-        for (MyShape shape : shapes) {
-            shape.printCoordinates();
-            if (shape.isTouched(x,y)) {
-                return shape;
-            }
-        }
-        return null;
     }
 
     private void setFrameCursor(int cursorType) {

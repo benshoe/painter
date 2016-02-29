@@ -31,4 +31,17 @@ public class MyCircle extends MyBoundedShape
             graphics2D.drawOval(getUpperLeftX(), getUpperLeftY(),
                     getWidth(), getWidth());
     } // end method draw
+
+    @Override
+    public boolean isTouched(int x, int y) {
+        double radius = Math.abs(getX2() - getX1()) / 2;
+        double startX = Math.min(getX1(), getX2());
+        double startY = Math.min(getY1(), getY2());
+        double centerX = startX + radius;
+        double centerY = startY + radius;
+
+        // If you know Pythagoras, the following should be simple to understand ;-)
+        double distanceFromCenter = Math.sqrt(Math.pow(centerX - x, 2) + Math.pow(centerY - y, 2));
+        return distanceFromCenter <= radius;
+    }
 } // end class MyCircle
