@@ -1,7 +1,7 @@
 /**
- * Created by ben on 24-02-16.
+ * A class holding all images as static fields
  */
-public class Images {
+public final class Images {
     // Top panel
     public static final String OPEN = "images/open.png";
     public static final String SAVE = "images/save.png";

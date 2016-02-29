@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * Created by ben on 22-02-16.
+ * This panel holds the different buttons that handle the actions for color, redo, undo, draw and select mode
+ *
+ * The ActionListener fields get a function passed from the calling client
  */
 public final class ComponentPanel extends JPanel {
 
@@ -16,29 +18,23 @@ public final class ComponentPanel extends JPanel {
 	public ComponentPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        Icon drawModeIcon = new ImageIcon(getClass().getResource(Images.DRAW));
-        JButton drawModeButton = PainterPanel.addButtonToPanel(this, drawModeIcon, "Draw shape");
+        JButton drawModeButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.DRAW), "Draw shape");
         drawModeButton.addActionListener(e -> onDrawModeClicked.actionPerformed(e));
 
-        Icon selectModeIcon = new ImageIcon(getClass().getResource(Images.SELECT));
-        JButton selectModeButton = PainterPanel.addButtonToPanel(this, selectModeIcon, "Select shape");
+        JButton selectModeButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.SELECT), "Select shape");
         selectModeButton.addActionListener(e -> onSelectModeClicked.actionPerformed(e));
 
-        Icon undoIcon = new ImageIcon(getClass().getResource(Images.UNDO));
-        JButton undoButton = PainterPanel.addButtonToPanel(this, undoIcon, "Undo");
+        JButton undoButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.UNDO), "Undo");
         undoButton.addActionListener(e -> onUndoClicked.actionPerformed(e));
 
-        Icon redoIcon = new ImageIcon(getClass().getResource(Images.REDO));
-        JButton redoButton = PainterPanel.addButtonToPanel(this, redoIcon, "Redo");
+        JButton redoButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.REDO), "Redo");
         redoButton.addActionListener(e -> onRedoClicked.actionPerformed(e));
 
         // create a button for clearing all drawings
-        Icon clearIcon = new ImageIcon(getClass().getResource(Images.TRASH));
-        JButton clearButton = PainterPanel.addButtonToPanel(this, clearIcon, "Clear all images");
+        JButton clearButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.TRASH), "Clear all images");
         clearButton.addActionListener(e -> onClearClicked.actionPerformed(e));
 
-        Icon colorIcon = new ImageIcon(getClass().getResource(Images.COLOUR_PICKER));
-        JButton colorbutton = PainterPanel.addButtonToPanel(this, colorIcon, "Draw shape");
+        JButton colorbutton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.COLOUR_PICKER), "Draw shape");
         colorbutton.addActionListener(e -> onColorClicked.actionPerformed(e));
 
 	}

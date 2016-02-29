@@ -1,6 +1,6 @@
 /**
- * @author <a href="mailto:ben.schoen@itris.nl">Ben Schoen</a>
- * @since 2/25/16.
+ * An enum with all the shape types that this application knows about
+ *
  */
 public enum ShapeType {
 	LINE("Line"), OVAL("Oval"), CIRCLE("Circle"), RECTANGLE("Rectangle"), SQUARE("Square"), ROUNDED_RECTANGLE("Rounded Rectangle");
@@ -9,10 +9,6 @@ public enum ShapeType {
 
 	ShapeType(String s) {
 		shapeName = s;
-	}
-
-	public String getShapeName() {
-		return shapeName;
 	}
 
 	@Override

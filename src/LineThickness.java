@@ -1,6 +1,5 @@
 /**
- * @author <a href="mailto:ben.schoen@itris.nl">Ben Schoen</a>
- * @since 2/24/16.
+ * A class we created to hold the different line thickness values
  */
 public enum LineThickness {
 	THIN("Thin", 1), MIDDLE("Middle", 2), THICK("Thick", 3);

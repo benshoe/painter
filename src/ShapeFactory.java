@@ -1,13 +1,18 @@
 import java.awt.*;
 
 /**
+ *
+ * This factory creates all the different shapes that this application knows about
+ *
+ * When a new shape must be implemented, this factory class can be easily extended with that shape.
+ *
  * @author <a href="mailto:ben.schoen@online.liverpool.ac.uk">Ben Schoen</a>
  * @since 2/25/16.
  */
 public final class ShapeFactory {
 
 	public static MyShape getShape(ShapeType shapeType, int x1, int y1, int x2, int y2, Color currentColor, boolean filledShape) {
-		MyShape currentShape = null;
+		MyShape currentShape;
 		switch (shapeType) {
 			case LINE:
 				currentShape = new MyLine(x1, y1, x2, y2, currentColor);

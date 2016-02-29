@@ -18,7 +18,8 @@ public class DrawFrame extends JFrame {
        // create a panel to store the components at the top of the frame
        JPanel topPanel = new JPanel();
        ComponentPanel componentPanel = new ComponentPanel();
-      /*
+
+       /*
       The anonymous inner class is an object that implements the ActionListener
 interface. The object’s actionPerformed() method is overridden to set the frame’s
 title when the corresponding button is clicked. Because each button has its own listener,
@@ -26,48 +27,40 @@ it’s simpler than using one listener for multiple interface components.
 Inner classes look more complicated than separate classes, but they can simplify and
 shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Java 2 in 21 days, Sams.]
        */
-       componentPanel.setOnDrawModeClicked(e -> drawPanel.setDrawmode());
-       componentPanel.setOnSelectModeClicked(e -> drawPanel.setSelectmode());
+       componentPanel.setOnDrawModeClicked(e -> drawPanel.setDrawMode());
+       componentPanel.setOnSelectModeClicked(e -> drawPanel.setSelectMode());
        componentPanel.setOnUndoClicked(e -> drawPanel.clearLastShape());
        componentPanel.setOnClearClicked(e -> drawPanel.clearDrawing());
        componentPanel.setOnRedoClicked(e -> drawPanel.redoLastRemovedShape());
        componentPanel.setOnColorClicked(e -> drawPanel.setDrawingColor((Color) e.getSource()));
 
        //Save and open buttons
-       Icon openIcon = new ImageIcon(getClass().getResource(Images.OPEN));
-       JButton openFileButton = PainterPanel.addButtonToPanel(topPanel, openIcon, "Open File");
+       JButton openFileButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.OPEN), "Open File");
        openFileButton.addActionListener(e -> drawPanel.openFileDialog());
 
-       Icon saveIcon = new ImageIcon(getClass().getResource(Images.SAVE));
-       JButton saveFileButton = PainterPanel.addButtonToPanel(topPanel, saveIcon, "Save File");
+       JButton saveFileButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.SAVE), "Save File");
        saveFileButton.addActionListener(e -> drawPanel.saveFileDialog());
 
        //Draw shape buttons
-       Icon lineIcon = new ImageIcon(getClass().getResource(Images.LINE));
-       JButton drawLineButton = PainterPanel.addButtonToPanel(topPanel, lineIcon, "Line");
+       JButton drawLineButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.LINE), "Line");
        drawLineButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.LINE));
 
-       Icon squareIcon = new ImageIcon(getClass().getResource(Images.SQUARE));
-       JButton drawSquareButton = PainterPanel.addButtonToPanel(topPanel, squareIcon, "Square");
+       JButton drawSquareButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.SQUARE), "Square");
        drawSquareButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.SQUARE));
 
-       Icon rectIcon = new ImageIcon(getClass().getResource(Images.RECTANGLE));
-       JButton drawRectButton = PainterPanel.addButtonToPanel(topPanel, rectIcon, "Rectangle");
+       JButton drawRectButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.RECTANGLE), "Rectangle");
        drawRectButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.RECTANGLE));
 
-       Icon circleIcon = new ImageIcon(getClass().getResource(Images.CIRCLE));
-       JButton drawCirleButton = PainterPanel.addButtonToPanel(topPanel, circleIcon, "Circle");
+       JButton drawCirleButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.CIRCLE), "Circle");
        drawCirleButton.addActionListener(e -> drawPanel.setShapeType(ShapeType.CIRCLE));
 
-       Icon ovalIcon = new ImageIcon(getClass().getResource(Images.OVAL));
-       JButton drawOvalButton = PainterPanel.addButtonToPanel(topPanel, ovalIcon, "Oval");
+       JButton drawOvalButton = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.OVAL), "Oval");
       drawOvalButton.addActionListener(e1 -> drawPanel.setShapeType(ShapeType.OVAL));
 
-       Icon roundedRectIcon = new ImageIcon(getClass().getResource(Images.ROUNDED_RECTANGLE));
-       JButton drawRoundedSquare = PainterPanel.addButtonToPanel(topPanel, roundedRectIcon, "Rounded rectangle");
+       JButton drawRoundedSquare = PainterPanel.addButtonToPanel(topPanel, getClass().getResource(Images.ROUNDED_RECTANGLE), "Rounded rectangle");
        drawRoundedSquare.addActionListener(e -> drawPanel.setShapeType(ShapeType.ROUNDED_RECTANGLE));
 
-       //Line thinkness Button
+       //Line thickness combo box
        LineThickness[] lineThicknesses = LineThickness.values();
        JComboBox<LineThickness> basicStrokeCombo = new JComboBox<>(lineThicknesses);
        topPanel.add(basicStrokeCombo);

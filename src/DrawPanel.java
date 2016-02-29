@@ -11,7 +11,7 @@ public class DrawPanel extends JPanel {
 
     ArrayList<MyShape> shapes = new ArrayList<>(); // Array holding all shapes of drawing
     ArrayList<MyShape> removedShapes = new ArrayList<>();
-    private String m_fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
+    private String fileBaseName = "New file.painter"; //UGLY// copy in DrawFrame.Java
 
     private ShapeType shapeType; // the type of shape to draw
     private MyShape currentShape; // the current shape being drawn
@@ -19,26 +19,19 @@ public class DrawPanel extends JPanel {
     private boolean filledShape; // whether this shape is filled
     private LineThickness lineThickness = LineThickness.THIN;
     private JLabel statusLabel; // label displaying mouse coordinates
+
+    /* We have two MouseMotionListener classes in this class created where at any time only one is active.
+     * The MouseDrawHandler is active by default and is used to draw shapes on the screen.
+     * The MouseSelectHandler is used to select an image on the screen and move it across the screen.
+     *
+     * The mouse handlers can be toggled by the user by clicking on the image with the pencil and
+     * the image below it (a pencil in a dashed square).
+     *
+     * The setDrawMode and setSelectMode methods take care of this. Also the cursor changes its appearance depending on the mode
+     *
+     */
     private final MouseDrawHandler mouseDrawHandler;
     private final MouseSelectHandler mouseSelectHandler;
-
-    public void setDrawmode() {
-        addMouseListener(mouseDrawHandler);
-        addMouseMotionListener(mouseDrawHandler);
-        removeMouseListener(mouseSelectHandler);
-        removeMouseMotionListener(mouseSelectHandler);
-        setFrameCursor(Cursor.CROSSHAIR_CURSOR);
-        currentShape = null;
-    }
-
-    public void setSelectmode() {
-        addMouseListener(mouseSelectHandler);
-        addMouseMotionListener(mouseSelectHandler);
-        removeMouseListener(mouseDrawHandler);
-        removeMouseMotionListener(mouseDrawHandler);
-        setFrameCursor(Cursor.DEFAULT_CURSOR);
-        currentShape = null;
-    }
 
     // constructor
     public DrawPanel(JLabel status) {
@@ -53,7 +46,7 @@ public class DrawPanel extends JPanel {
         // add the mouse listeners
         mouseDrawHandler = new MouseDrawHandler();
         mouseSelectHandler = new MouseSelectHandler();
-        setDrawmode();
+        setDrawMode();
 
         // set the status label for displaying mouse coordinates
         statusLabel = status;
@@ -79,6 +72,24 @@ public class DrawPanel extends JPanel {
             currentShape.draw(g);
     } // end method paintComponent
 
+    public void setDrawMode() {
+        addMouseListener(mouseDrawHandler);
+        addMouseMotionListener(mouseDrawHandler);
+        removeMouseListener(mouseSelectHandler);
+        removeMouseMotionListener(mouseSelectHandler);
+        setFrameCursor(Cursor.CROSSHAIR_CURSOR);
+        currentShape = null; // when switching mode the currentshape must be set to null
+    }
+
+    public void setSelectMode() {
+        addMouseListener(mouseSelectHandler);
+        addMouseMotionListener(mouseSelectHandler);
+        removeMouseListener(mouseDrawHandler);
+        removeMouseMotionListener(mouseDrawHandler);
+        setFrameCursor(Cursor.DEFAULT_CURSOR);
+        currentShape = null; // when switching mode the currentshape must be set to null or we would move the last selected image to the cursor
+    }
+
     // sets the type of shape to draw
     public void setShapeType(ShapeType shapeType) {
         this.shapeType = shapeType;
@@ -97,15 +108,17 @@ public class DrawPanel extends JPanel {
         return (float) lineThickness.getThickness();
     }
 
-    // clears the last shape drawn
+    // clears the last shape drawn by removing it from list shapes and adding it to removedShapes for redo
     public void clearLastShape() {
-        if (shapes.size() > 0) {
-            MyShape removedShape = shapes.remove(shapes.size() - 1);
-            removedShapes.add(removedShape);
-            repaint();
-        } // end if
+        if (shapes.size() == 0) {
+            return;
+        }
+        MyShape removedShape = shapes.remove(shapes.size() - 1);
+        removedShapes.add(removedShape);
+        repaint();
     } // end method clearLastShape
 
+    // By moving the shape out of removedShapes and putting it in shapes, we redo the latest action
     public void redoLastRemovedShape() {
         if (removedShapes.size() == 0) {
             return;
@@ -134,7 +147,6 @@ public class DrawPanel extends JPanel {
      * https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
      * The ImageFilter() below ensures only .painter files are user-selectable;
      * see ImageFilter.java and Utils.java.
-     * @return void
      */
     public void openFileDialog() {
 
@@ -184,7 +196,6 @@ public class DrawPanel extends JPanel {
      * The output file will contain the shapes only, without any further
      * meta information (like file format version or other "header infos").
      *
-     * @return void
      */
     public void saveToFile(String filename) throws IOException {
         // Write to disk with FileOutputStream
@@ -205,13 +216,12 @@ public class DrawPanel extends JPanel {
      * to overwrite it. If saving was successful, window title will be
      * set to now-current filename.
      *
-     * @return void
      */
     public void saveFileDialog() {
 
         final JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new ImageFilter());
-        fc.setSelectedFile(new File(m_fileBaseName));
+        fc.setSelectedFile(new File(fileBaseName));
 
         int returnVal = fc.showSaveDialog(this);
 
@@ -247,7 +257,7 @@ public class DrawPanel extends JPanel {
 
             try {
                 saveToFile(selectedFileAbsolutPath);
-                m_fileBaseName = selectedFileBasename;
+                fileBaseName = selectedFileBasename;
 
                 // append new / now-current filename to window title
                 JFrame myWindow = (JFrame) SwingUtilities.getRoot(this);
@@ -264,7 +274,7 @@ public class DrawPanel extends JPanel {
 
     }
 
-    // handles mouse events for this JPanel
+    // handles mouse draw events for this JPanel
     private class MouseDrawHandler extends MouseAdapter
             implements MouseMotionListener {
         // creates and sets the initial position for the new shape
@@ -286,8 +296,7 @@ public class DrawPanel extends JPanel {
             currentShape.setX2(e.getX());
             currentShape.setY2(e.getY());
 
-            // set the shape only if there is room in the array
-            // as we switched to arrayList, this is only limited to system memory...
+            // we add the shape to the arrayList shapes
             shapes.add(currentShape);
 
             currentShape = null; // clear the temporary drawing shape
@@ -311,13 +320,14 @@ public class DrawPanel extends JPanel {
         } // end method mouseMoved
     } // end class MouseHandler
 
-    // handles mouse events for this JPanel
+    // handles mouse select/drag events for this JPanel
+    // we extend the MouseAdapter so we only need to implement the methods that we need
     private class MouseSelectHandler extends MouseAdapter
             implements MouseMotionListener {
 
-        private int startX1;
-        private int startX2;
-        private int startY1;
+        private int startX1; // we need to store the initial values
+        private int startX2; // of the shape so we can move it
+        private int startY1; // around and keep its shape intact
         private int startY2;
         private int mouseX;
         private int mouseY;
@@ -326,13 +336,14 @@ public class DrawPanel extends JPanel {
         public void mouseMoved(MouseEvent e) {
             statusLabel.setText(String.format("(%d,%d)", e.getX(), e.getY()));
             for(MyShape shape : shapes) {
-                if (shape.isTouched(e.getX(), e.getY())) {
+                if (shape.isTouched(e.getX(), e.getY())) { //The first shape that is 'touched' will be moved
                     currentShape = shape;
-                    setFrameCursor(Cursor.HAND_CURSOR);
+                    setFrameCursor(Cursor.HAND_CURSOR); // change the cursor type
                     return;
                 }
             }
             setFrameCursor(Cursor.DEFAULT_CURSOR);
+            currentShape = null;
         }
 
         @Override
@@ -340,6 +351,7 @@ public class DrawPanel extends JPanel {
             mouseX = e.getX();
             mouseY = e.getY();
             if(currentShape != null) {
+                // store the initial values of the shape
                 startX1 = currentShape.getX1();
                 startX2 = currentShape.getX2();
                 startY1 = currentShape.getY1();
@@ -356,6 +368,7 @@ public class DrawPanel extends JPanel {
         @Override
         public void mouseDragged(MouseEvent e) {
             if(currentShape != null) {
+                // The shape's size must be kept constant or we would shrink the image while dragging
                 currentShape.setX1(startX1 + e.getX() - mouseX);
                 currentShape.setY1(startY1 + e.getY() - mouseY);
                 currentShape.setX2(startX2 + e.getX() - mouseX);

@@ -1,15 +1,6 @@
-// GCS Exercise 10.2 Solution: MyOval.java
-// Declaration of class MyOval.
 import java.awt.*;
 
-public class MyCircle extends MyBoundedShape
-{
-    // call default superclass constructor
-    public MyCircle()
-    {
-        super();
-    } // end MyCircle no-argument constructor
-
+public class MyCircle extends MyBoundedShape {
     // call superclass constructor passing parameters
     public MyCircle(int x1, int y1, int x2, int y2,
                   Color color, boolean isFilled)
@@ -34,6 +25,7 @@ public class MyCircle extends MyBoundedShape
 
     @Override
     public boolean isTouched(int x, int y) {
+        /* In order to know whether the mouse is within the circle we must use pythagoras */
         double radius = Math.abs(getX2() - getX1()) / 2;
         double startX = Math.min(getX1(), getX2());
         double startY = Math.min(getY1(), getY2());

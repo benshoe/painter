@@ -1,14 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 /**
- * Created by ben on 28-02-16.
+ * This helper class adds buttons to a panel.
  */
 public class PainterPanel {
 
-    public static JButton addButtonToPanel(JPanel panel, Icon icon, String toolTipText) {
+    public static JButton addButtonToPanel(JPanel panel, URL iconUrl, String toolTipText) {
         JButton button;
-        button = new JButton(icon);
+        button = new JButton(new ImageIcon(iconUrl));
         button.setToolTipText(toolTipText);
         button.setPreferredSize(new Dimension(40, 40));
         panel.add(button);
