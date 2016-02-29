@@ -35,8 +35,8 @@ public final class ComponentPanel extends JPanel {
         JButton clearButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.TRASH), "Clear all images");
         clearButton.addActionListener(e -> onClearClicked.actionPerformed(e));
 
-        JButton colorbutton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.COLOUR_PICKER), "Draw shape");
-        colorbutton.addActionListener(e -> {
+        JButton colorButton = PainterPanel.addButtonToPanel(this, getClass().getResource(Images.COLOUR_PICKER), "Draw shape");
+        colorButton.addActionListener(e -> {
             Color newColor = JColorChooser.showDialog(ComponentPanel.this, "Choose color", Color.BLACK);
             e.setSource(newColor);
             onColorClicked.actionPerformed(e);

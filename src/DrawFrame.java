@@ -3,6 +3,7 @@
 // Allows the user to choose the shape and color.
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class DrawFrame extends JFrame {
     // Array of possible shapes
@@ -14,6 +15,8 @@ public class DrawFrame extends JFrame {
        super("Painter - New file.painter");
 
        setLookAndFeel();
+
+       addMenu();
 
        // create a panel to store the components at the top of the frame
        JPanel topPanel = new JPanel();
@@ -92,6 +95,34 @@ shorten your Java code. [Lemay, L. & Cadenhead, R. 2002, Sams teach yourself Ja
 
       add(drawPanel); // add the drawing area to the center
    } // end DrawFrame constructor
+
+    private void addMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+
+        JMenuItem openMenuItem = new JMenuItem("Open");
+        fileMenu.add(openMenuItem);
+        openMenuItem.setMnemonic(KeyEvent.VK_O);
+        openMenuItem.setIcon(new ImageIcon(getClass().getResource(Images.OPEN)));
+        openMenuItem.addActionListener(e -> drawPanel.openFileDialog());
+
+        JMenuItem saveMenuItem = new JMenuItem("Save");
+        fileMenu.add(saveMenuItem);
+        saveMenuItem.setMnemonic(KeyEvent.VK_S);
+        saveMenuItem.setIcon(new ImageIcon(getClass().getResource(Images.SAVE)));
+        saveMenuItem.addActionListener(e -> drawPanel.saveFileDialog());
+
+        fileMenu.add(new JSeparator());
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        fileMenu.add(exitMenuItem);
+        exitMenuItem.setMnemonic(KeyEvent.VK_X);
+        exitMenuItem.addActionListener(e -> System.exit(10));
+
+        setJMenuBar(menuBar);
+
+    }
 
     private void setLookAndFeel() {
       try {
