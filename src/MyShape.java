@@ -108,10 +108,11 @@ public abstract class MyShape implements java.io.Serializable
    // than this one here, which uses the objects bounding box instead
    // of the shape's real wireframe
    public boolean isTouched(int x, int y) {
-      if(x >= this.getX1() && x <= this.getX2() && y >= this.getY1() && y <= this.getY2()) {
-         return true;
-      }
-      return false;
+      int minX = Math.min(getX1(), getX2());
+      int maxX = Math.max(getX1(), getX2());
+      int minY = Math.min(getY1(), getY2());
+      int maxY = Math.max(getY1(), getY2());
+      return x >= minX && x <= maxX && y >= minY && y <= maxY;
    }
 
    public void printCoordinates() {

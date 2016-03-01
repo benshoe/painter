@@ -41,7 +41,7 @@ public class MySquare extends MyBoundedShape
         * if the mouse is within the square we must calculate the exact dimensions.
         */
         int side = Math.abs(getX1() - getX2());
-        int startX = Math.min(getX1(), getX1());
+        int startX = Math.min(getX1(), getX2());
         int startY = Math.min(getY1(), getY2());
         int endX = startX + side;
         int endY = startY + side;
